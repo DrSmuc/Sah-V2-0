@@ -1,7 +1,8 @@
 #include<iostream>
+#include<fstream>
 #include<string>
 #include<algorithm>
-#include<fstream>
+#include<string.h>
 using namespace std;
 
 void naslov()
@@ -35,7 +36,7 @@ void new_user(user* a, int& br_user)
     cin.getline(a[br_user].ime, 51);
     br_user++;
 }
-bool poIme(user a, user b) { return (a.ime < b.ime) ? true : false; }
+bool poIme(user a, user b) { return (strcmp(a.ime, b.ime)>0) ? true : false; }
 bool poWin(user a, user b) { return (a.win < b.win) ? true : false; }
 bool poLos(user a, user b) { return (a.los < b.los) ? true : false; }
 
@@ -67,8 +68,8 @@ int main()
         naslov();
         cout << "1. nova igra" << endl;
         cout << "2. match history" << endl;
-        cout << "3. leaderboard" << endl;
-        cout << "4. user menagment" << endl;
+        cout << "3. user menagment" << endl;
+        cout << "4. leaderboard" << endl;
         cout << "5. pravila" << endl;
         cout << "6. izlaz" << endl;
         cout << "vas odabir: ";
@@ -177,7 +178,68 @@ int main()
 
         else if (izbor == 3)
         {
+            //user menager
 
+            int menager_izbor;
+            while (1)
+            {
+                system("cls");
+                for (int i = 0; i < br_user; i++)
+                {
+                    cout << a[i].ime << "\t\t" << a[i].win << "\t\t" << a[i].los << endl;
+                }
+                cout << endl;
+                cout << "1. sortiraj" << endl;
+                cout << "2. dodaj" << endl;
+                cout << "3. izbrisi" << endl;
+                cout << "4. promijeni" << endl;
+                cout << "5. izlaz" << endl;
+                cout << "Izbor: ";
+                cin >> menager_izbor;
+
+                if (menager_izbor == 1)
+                {
+                    while (1)
+                    {
+                        system("cls");
+                        cout << "1. po imenu" << endl;
+                        cout << "2. po pobjedama" << endl;
+                        cout << "3. po porazima" << endl;
+                        cout << "4. povratak" << endl;
+                        cin >> menager_izbor;
+
+                        switch (menager_izbor)
+                        {
+                        case 1:
+                            sort(a, a + br_user, poIme);
+                            break;
+                        case 2:
+                            sort(a, a + br_user, poWin);
+                            break;
+                        case 3:
+                            sort(a, a + br_user, poLos);
+                            break;
+                        case 4:
+                            cout << "Povratak!" << endl;
+                            pause();
+                            break;
+                        default:
+                            cout << "Krivi unos!" << endl;
+                            pause();
+                        }
+                    }
+                }
+                else if (menager_izbor == 2)
+                    new_user(a, br_user);
+                /*else if (menager_izbor == 3)
+                {
+                    char brisati[51];
+                    cout << "Koga zelite izbrisati:" << endl;
+                    cin.ignore();
+                    cin.getline(brisati, 51);
+                    remove_if(a, a + br_user, a->ime==brisati);
+                }*/
+            }
         }
 
         else if (izbor == 4)
@@ -192,7 +254,8 @@ int main()
 
         else if (izbor == 6)
         {
-
+            cout << "Izlaz iz programa!" << endl;
+            break;
         }
 
         else
