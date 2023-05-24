@@ -29,7 +29,7 @@ struct user
     short int drw = 0;
 };
 
-void pause()
+void pause() //hvala profesore :)
 {
     cout << endl << "Pritisnite enter za nastavak...";
     string dummy;
@@ -207,7 +207,7 @@ int main()
 
         else if (izbor == 2)
         {
-            //prvo treba alg. za citanje
+            //prvo treba alg. za citanje 
         }
 
         else if (izbor == 3)
