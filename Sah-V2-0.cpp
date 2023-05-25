@@ -202,12 +202,1180 @@ int main()
             }
 
             //stari kod
+            char  figure[13], stupac_pretvarac[8];
+            int ploca[8][8], krajigre = 0, rosada_b1 = 1, rosada_b2 = 1, rosada_c1 = 1, rosada_c2 = 1, pozicija_ck_i = 0, pozicija_bk_i = 7, pozicija_bk_j = 4, pozicija_ck_j = 4;
+            cout << "Upisite ime bijeli: \n" << endl;;
+            
+
+            cout << "\n\nFigure: \n\nB - BIJELA FIGURA \nC - CRNA FIGURA \nP - PJESACI \nT - TOP \nS - SKAKAC \nL - LOVAC \nQ - KRALJICA \nK - KRALJ\n\n" << endl;
+
+            cout << "\nPomicanje figura:\n\nZa pomicanje figura upisite koordinate \npolja figure koju hocete pomaknuti te potom mjesta gdje je zelite pomaknuti.\nPrvo upisite stupac a potom redak.\n\n\n" << endl;
+
+
+            for (int i = 0; i < 8; i++)
+                for (int j = 0; j < 8; j++)
+                    ploca[i][j] = 13;
+
+            figure[0] = 'P';
+            figure[1] = 'P';
+            figure[2] = 'T';
+            figure[3] = 'T';
+            figure[4] = 'S';
+            figure[5] = 'S';
+            figure[6] = 'L';
+            figure[7] = 'L';
+            figure[8] = 'Q';
+            figure[9] = 'Q';
+            figure[10] = 'K';
+            figure[11] = 'K';
+
+
+            ploca[0][0] = 3;
+            ploca[0][1] = 5;
+            ploca[0][2] = 7;
+            ploca[0][3] = 9;
+            ploca[0][4] = 11;
+            ploca[0][5] = 7;
+            ploca[0][6] = 5;
+            ploca[0][7] = 3;
+            ploca[7][0] = 2;
+            ploca[7][1] = 4;
+            ploca[7][2] = 6;
+            ploca[7][3] = 8;
+            ploca[7][4] = 10;
+            ploca[7][5] = 6;
+            ploca[7][6] = 4;
+            ploca[7][7] = 2;
+
+            for (int i = 0; i < 8; i++)
+                for (char j = 'A'; j < 'I'; j++)
+                    stupac_pretvarac[i] = j;
+
+            for (int j = 0; j < 8; j++)
+                ploca[1][j] = 1;
+            for (int j = 0; j < 8; j++)
+                ploca[6][j] = 0;
+
+            int pb = 0;
+
+            for (int i = 'a'; i < 'i'; i++)
+            {
+                stupac_pretvarac[pb] = i;
+                pb++;
+            }
+
+            int napotezu = 1;
+
+            while (1)
+            {
+                int unos_reda_pomak, unos_stupca_pocetni, reset = 1, unos_stupca_pomak, unos_reda_pocetni, red_pocetni, red_pomak, bsah_dd = 0, bsah_dl = 0, bsah_gl = 0, bsah_gd = 0, bsah_g = 0, bsah_desno = 0, bsah_d = 0, bsah_l = 0, bsah_pijun = 0, bsah_konj = 0, csah_dd = 0, csah_dl = 0, csah_gl = 0, csah_gd = 0, csah_g = 0, csah_desno = 0, csah_d = 0, csah_l = 0, csah_pijun = 0, csah_konj = 0;
+                char stupac_pocetni, stupac_pomak, zamjena_figure;
+
+                if (napotezu % 2 != 0)
+                {
+                    for (int t = 8, i = 0; i < 8; i++)
+                    {
+                        cout << "|";
+                        for (int j = 0; j < 8; j++)
+                        {
+                            int t = ploca[i][j];
+                            if (t % 2 == 0 && t != 13 && t != 14 && t != 15)
+                            {
+                                cout << "B";
+                                cout << figure[t] << "|";
+                            }
+                            if (t % 2 != 0 && t != 13 && t != 14 && t != 15)
+                            {
+                                cout << "C";
+                                cout << figure[t] << "|";
+                            }
+                            if (t == 13 || t == 14 || t == 15)
+                                cout << "  |";
+                        }
+                        cout << " " << t << endl;
+                        t--;
+                    }
+                    cout << " ";
+                    for (char i = 'A'; i < 'I'; i++)
+                    {
+                        cout << i << "  ";
+                    }
+                    cout << endl << endl;
+                }
+
+                else
+                {
+                    for (int t = 1, i = 7; i >= 0; i--)
+                    {
+                        cout << "|";
+                        for (int j = 7; j >= 0; j--)
+                        {
+                            int t = ploca[i][j];
+                            if (t % 2 == 0 && t != 13 && t != 14 && t != 15)
+                            {
+                                cout << "B";
+                                cout << figure[t] << "|";
+                            }
+                            if (t % 2 != 0 && t != 13 && t != 14 && t != 15)
+                            {
+                                cout << "C";
+                                cout << figure[t] << "|";
+                            }
+                            if (t == 13 || t == 14 || t == 15)
+                                cout << "  |";
+                        }
+                        cout << " " << t << endl;
+                        t++;
+                    }
+                    for (char i = 'H'; i >= 'A'; i--)
+                    {
+                        cout << "  " << i;
+                    }
+                    cout << endl << endl;
+                }
+
+
+                if (napotezu % 2 != 0)
+                    cout << player1 << endl;
+                else
+                    cout << player2 << endl;
+                cout << "Upisite polje figure koju zelite pomaknuti:\n" << endl;
+                cin >> stupac_pocetni >> red_pocetni;
+                cout << "Upisite polje gdje zelite pomaknuti figuru:\n" << endl;
+                cin >> stupac_pomak >> red_pomak;
+
+                unos_reda_pocetni = 8 - red_pocetni;
+
+                for (int i = 0; i < 8; i++)
+                    if (stupac_pocetni == stupac_pretvarac[i])
+                        unos_stupca_pocetni = i;
+
+
+                unos_reda_pomak = 8 - red_pomak;
+
+                for (int i = 0; i < 8; i++)
+                    if (stupac_pomak == stupac_pretvarac[i])
+                        unos_stupca_pomak = i;
+
+                if (ploca[unos_reda_pocetni][unos_stupca_pocetni] % 2 != napotezu % 2 && (ploca[unos_reda_pomak][unos_stupca_pomak] % 2 == napotezu % 2 || ploca[unos_reda_pomak][unos_stupca_pomak] == 13))//nesto tu
+                {
+                    switch (ploca[unos_reda_pocetni][unos_stupca_pocetni])
+                    {
+                    case 0:
+                        //crni pijun
+                        if (unos_reda_pomak == unos_reda_pocetni - 1 && unos_stupca_pocetni == unos_stupca_pomak)
+                            reset = 0;
+                        if (unos_reda_pocetni == 6 && unos_reda_pomak == unos_reda_pocetni - 2 && unos_stupca_pocetni == unos_stupca_pomak)
+                        {
+                            reset = 0;
+                        }
+                        if ((ploca[unos_reda_pomak][unos_stupca_pomak] == 15 || ploca[unos_reda_pomak][unos_stupca_pomak] != 13) && unos_reda_pomak + 1 == unos_reda_pocetni && (unos_stupca_pomak + 1 == unos_stupca_pocetni || unos_stupca_pomak - 1 == unos_stupca_pocetni))
+                            reset = 0;
+                        break;
+                    case 1:
+                        //bijeli pijun
+                        if (unos_reda_pomak == unos_reda_pocetni + 1 && unos_stupca_pocetni == unos_stupca_pomak)
+                            reset = 0;
+                        if (unos_reda_pocetni == 1 && unos_reda_pomak == unos_reda_pocetni + 2 && unos_stupca_pocetni == unos_stupca_pomak)
+                        {
+                            reset = 0;
+                        }
+                        if ((ploca[unos_reda_pomak][unos_stupca_pomak] == 14 || ploca[unos_reda_pomak][unos_stupca_pomak] != 13) && unos_reda_pomak - 1 == unos_reda_pocetni && (unos_stupca_pomak + 1 == unos_stupca_pocetni || unos_stupca_pomak - 1 == unos_stupca_pocetni))
+                            reset = 0;
+                        break;
+                    case 2:
+                        //crni top
+                        if (unos_stupca_pocetni == 0)
+                            rosada_b1 = 0;
+                        if (unos_stupca_pocetni == 7)
+                            rosada_b2 = 0;
+                        if (unos_reda_pocetni == unos_reda_pomak && unos_stupca_pocetni < unos_stupca_pomak)
+                        {
+                            for (int i = unos_stupca_pocetni + 1; i < unos_reda_pomak; i++)
+                            {
+                                if (ploca[unos_reda_pocetni][i] != 13 && ploca[unos_reda_pocetni][i] != 14 && ploca[unos_reda_pocetni][i] != 15)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        if (unos_reda_pocetni == unos_reda_pomak && unos_stupca_pocetni > unos_stupca_pomak)
+                        {
+                            for (int i = unos_stupca_pocetni - 1; i > unos_stupca_pomak; i--)
+                            {
+                                if (ploca[unos_reda_pocetni][i] != 13 && ploca[unos_reda_pocetni][i] != 14 && ploca[unos_reda_pocetni][i] != 15)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        if (unos_reda_pocetni > unos_reda_pomak && unos_stupca_pocetni == unos_stupca_pomak)
+                        {
+                            for (int i = unos_reda_pocetni - 1; i > unos_reda_pomak; i--)
+                            {
+                                if (ploca[i][unos_stupca_pomak] != 13)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        if (unos_reda_pocetni < unos_reda_pomak && unos_stupca_pocetni == unos_stupca_pomak)
+                        {
+                            for (int i = unos_reda_pocetni + 1; i < unos_reda_pomak; i++)
+                            {
+                                if (ploca[i][unos_reda_pomak] != 13)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        break;
+                    case 3:
+                        //bijeli top
+                        if (unos_stupca_pocetni == 0)
+                            rosada_c1 = 0;
+                        if (unos_stupca_pocetni == 7)
+                            rosada_c2 = 0;
+                        if (unos_reda_pocetni == unos_reda_pomak && unos_stupca_pocetni < unos_stupca_pomak)
+                        {
+                            for (int i = unos_stupca_pocetni + 1; i < unos_reda_pomak; i++)
+                            {
+                                if (ploca[i][unos_stupca_pomak] != 13)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        if (unos_reda_pocetni == unos_reda_pomak && unos_stupca_pocetni > unos_stupca_pomak)
+                        {
+                            for (int i = unos_stupca_pocetni - 1; i > unos_stupca_pomak; i--)
+                            {
+                                if (ploca[unos_reda_pocetni][i] != 13 && ploca[unos_reda_pocetni][i] != 14 && ploca[unos_reda_pocetni][i] != 15)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        if (unos_reda_pocetni > unos_reda_pomak && unos_stupca_pocetni == unos_stupca_pomak)
+                        {
+                            for (int i = unos_reda_pocetni - 1; i > unos_reda_pomak; i--)
+                            {
+                                if (ploca[i][unos_stupca_pocetni] != 13)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        if (unos_reda_pocetni < unos_reda_pomak && unos_stupca_pocetni == unos_stupca_pomak)
+                        {
+                            for (int i = unos_reda_pocetni + 1; i < unos_reda_pomak; i++)
+                            {
+                                if (ploca[i][unos_stupca_pocetni] != 13)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        break;
+                    case 4:
+                        //crni skakac
+                        if (unos_reda_pomak == unos_reda_pocetni - 2 && unos_stupca_pomak == unos_stupca_pocetni - 1)
+                            reset = 0;
+                        if (unos_reda_pomak == unos_reda_pocetni - 2 && unos_stupca_pomak == unos_stupca_pocetni + 1)
+                            reset = 0;
+                        if (unos_reda_pomak == unos_reda_pocetni - 1 && unos_stupca_pomak == unos_stupca_pocetni - 2)
+                            reset = 0;
+                        if (unos_reda_pomak == unos_reda_pocetni - 1 && unos_stupca_pomak == unos_stupca_pocetni + 2)
+                            reset = 0;
+                        if (unos_reda_pomak == unos_reda_pocetni + 1 && unos_stupca_pomak == unos_stupca_pocetni - 2)
+                            reset = 0;
+                        if (unos_reda_pomak == unos_reda_pocetni + 1 && unos_stupca_pomak == unos_stupca_pocetni + 2)
+                            reset = 0;
+                        if (unos_reda_pomak == unos_reda_pocetni + 2 && unos_stupca_pomak == unos_stupca_pocetni - 1)
+                            reset = 0;
+                        if (unos_reda_pomak == unos_reda_pocetni + 2 && unos_stupca_pomak == unos_stupca_pocetni + 1)
+                            reset = 0;
+                        break;
+                    case 5:
+                        //bijeli skakac
+                        if (unos_reda_pomak == unos_reda_pocetni - 2 && unos_stupca_pomak == unos_stupca_pocetni - 1)
+                            reset = 0;
+                        if (unos_reda_pomak == unos_reda_pocetni - 2 && unos_stupca_pomak == unos_stupca_pocetni + 1)
+                            reset = 0;
+                        if (unos_reda_pomak == unos_reda_pocetni - 1 && unos_stupca_pomak == unos_stupca_pocetni - 2)
+                            reset = 0;
+                        if (unos_reda_pomak == unos_reda_pocetni - 1 && unos_stupca_pomak == unos_stupca_pocetni + 2)
+                            reset = 0;
+                        if (unos_reda_pomak == unos_reda_pocetni + 1 && unos_stupca_pomak == unos_stupca_pocetni - 2)
+                            reset = 0;
+                        if (unos_reda_pomak == unos_reda_pocetni + 1 && unos_stupca_pomak == unos_stupca_pocetni + 2)
+                            reset = 0;
+                        if (unos_reda_pomak == unos_reda_pocetni + 2 && unos_stupca_pomak == unos_stupca_pocetni - 1)
+                            reset = 0;
+                        if (unos_reda_pomak == unos_reda_pocetni + 2 && unos_stupca_pomak == unos_stupca_pocetni + 1)
+                            reset = 0;
+                        break;
+                    case 6:
+                        //crni lovac
+                        if (unos_reda_pocetni < unos_reda_pomak && unos_stupca_pocetni < unos_stupca_pomak)
+                        {
+                            for (int i = unos_reda_pocetni + 1, j = unos_stupca_pocetni + 1; i < unos_reda_pomak; i++, j++)
+                            {
+                                if (ploca[i][j] != 13)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        if (unos_reda_pocetni<unos_reda_pomak && unos_stupca_pocetni>unos_stupca_pomak)
+                        {
+                            for (int i = unos_reda_pocetni + 1, j = unos_stupca_pocetni - 1; i < unos_reda_pomak; i++, j--)
+                            {
+                                if (ploca[i][j] != 13)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        if (unos_reda_pocetni > unos_reda_pomak && unos_stupca_pocetni < unos_stupca_pomak)
+                        {
+                            for (int i = unos_reda_pocetni - 1, j = unos_stupca_pocetni + 1; i > unos_reda_pomak; i--, j++)
+                            {
+                                if (ploca[i][j] != 13)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        if (unos_reda_pocetni > unos_reda_pomak && unos_stupca_pocetni > unos_stupca_pomak)
+                        {
+                            for (int i = unos_reda_pocetni - 1, j = unos_stupca_pocetni - 1; i > unos_reda_pomak; i--, j--)
+                            {
+                                if (ploca[i][j] != 13)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        break;
+                    case 7:
+                        //bijeli lovac
+                        if (unos_reda_pocetni < unos_reda_pomak && unos_stupca_pocetni < unos_stupca_pomak)
+                        {
+                            for (int i = unos_reda_pocetni + 1, j = unos_stupca_pocetni + 1; i < unos_reda_pomak; i++, j++)
+                            {
+                                if (ploca[i][j] != 13)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        if (unos_reda_pocetni > unos_reda_pomak && unos_stupca_pocetni > unos_stupca_pomak)
+                        {
+                            for (int i = unos_reda_pocetni + 1, j = unos_stupca_pocetni - 1; i < unos_reda_pomak; i--, j--)
+                            {
+                                if (ploca[i][j] != 13)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        if (unos_reda_pocetni > unos_reda_pomak && unos_stupca_pocetni < unos_stupca_pomak)
+                        {
+                            for (int i = unos_reda_pocetni - 1, j = unos_stupca_pocetni + 1; i > unos_reda_pomak; i--, j++)
+                            {
+                                if (ploca[i][j] != 13)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        if (unos_reda_pocetni > unos_reda_pomak && unos_stupca_pocetni > unos_stupca_pomak)
+                        {
+                            for (int i = unos_reda_pocetni - 1, j = unos_stupca_pocetni - 1; i > unos_reda_pomak; i--, j--)
+                            {
+                                if (ploca[i][j] != 13)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        break;
+                    case 8:
+                        //crna queen
+                        if (unos_reda_pocetni < unos_reda_pomak && unos_stupca_pocetni < unos_stupca_pomak)
+                        {
+                            for (int i = unos_reda_pocetni + 1, j = unos_stupca_pocetni + 1; i < unos_reda_pomak; i++, j++)
+                            {
+                                if (ploca[i][j] != 13)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        if (unos_reda_pocetni<unos_reda_pomak && unos_stupca_pocetni>unos_stupca_pomak)
+                        {
+                            for (int i = unos_reda_pocetni + 1, j = unos_stupca_pocetni - 1; i < unos_reda_pomak; i++, j--)
+                            {
+                                if (ploca[i][j] != 13)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        if (unos_reda_pocetni > unos_reda_pomak && unos_stupca_pocetni < unos_stupca_pomak)
+                        {
+                            for (int i = unos_reda_pocetni - 1, j = unos_stupca_pocetni + 1; i > unos_reda_pomak; i--, j++)
+                            {
+                                if (ploca[i][j] != 13)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        if (unos_reda_pocetni > unos_reda_pomak && unos_stupca_pocetni > unos_stupca_pomak)
+                        {
+                            for (int i = unos_reda_pocetni - 1, j = unos_stupca_pocetni - 1; i > unos_reda_pomak; i--, j--)
+                            {
+                                if (ploca[i][j] != 13)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        if (unos_reda_pocetni == unos_reda_pomak && unos_stupca_pocetni < unos_stupca_pomak)
+                        {
+                            for (int i = unos_stupca_pocetni + 1; i < unos_reda_pomak; i++)
+                            {
+                                if (ploca[unos_reda_pocetni][i] != 13)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        if (unos_reda_pocetni == unos_reda_pomak && unos_stupca_pocetni > unos_stupca_pomak)
+                        {
+                            for (int i = unos_stupca_pocetni - 1; i > unos_stupca_pomak; i--)
+                            {
+                                if (ploca[unos_reda_pocetni][i] != 13)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        if (unos_reda_pocetni > unos_reda_pomak && unos_stupca_pocetni == unos_stupca_pomak)
+                        {
+                            for (int i = unos_reda_pocetni - 1; i >= unos_reda_pomak; i--)
+                            {
+                                if (ploca[i][unos_stupca_pocetni] != 13)//gsgsgsdgsdg
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        if (unos_reda_pocetni < unos_reda_pomak && unos_stupca_pocetni == unos_stupca_pomak)
+                        {
+                            for (int i = unos_reda_pocetni + 1; i < unos_reda_pomak - 1; i++)
+                            {
+                                if (ploca[i][unos_stupca_pocetni] != 13)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        break;
+                    case 9:
+                        //bijela queen
+                        if (unos_reda_pocetni < unos_reda_pomak && unos_stupca_pocetni < unos_stupca_pomak)
+                        {
+                            if (unos_reda_pocetni - unos_stupca_pocetni == unos_reda_pomak - unos_stupca_pomak)
+                            {
+                                reset = 1;
+                                break;
+                            }
+                            for (int i = unos_reda_pocetni + 1, j = unos_stupca_pocetni + 1; i < unos_reda_pomak; i++, j++)
+                            {
+                                if (ploca[i][j] != 13)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        if (unos_reda_pocetni<unos_reda_pomak && unos_stupca_pocetni>unos_stupca_pomak)
+                        {
+                            if (unos_reda_pocetni - unos_stupca_pocetni == unos_reda_pomak - unos_stupca_pomak)
+                            {
+                                reset = 1;
+                                break;
+                            }
+                            for (int i = unos_reda_pocetni + 1, j = unos_stupca_pocetni - 1; i < unos_reda_pomak; i++, j--)
+                            {
+                                if (ploca[i][j] != 13)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        if (unos_reda_pocetni > unos_reda_pomak && unos_stupca_pocetni < unos_stupca_pomak)
+                        {
+                            if (unos_reda_pocetni - unos_stupca_pocetni == unos_reda_pomak - unos_stupca_pomak)
+                            {
+                                reset = 1;
+                                break;
+                            }
+                            for (int i = unos_reda_pocetni - 1, j = unos_stupca_pocetni + 1; i > unos_reda_pomak; i--, j++)
+                            {
+                                if (ploca[i][j] != 13)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        if (unos_reda_pocetni > unos_reda_pomak && unos_stupca_pocetni > unos_stupca_pomak)
+                        {
+                            if (unos_reda_pocetni - unos_stupca_pocetni == unos_reda_pomak - unos_stupca_pomak)
+                            {
+                                reset = 1;
+                                break;
+                            }
+                            for (int i = unos_reda_pocetni - 1, j = unos_stupca_pocetni - 1; i > unos_reda_pomak; i--, j--)
+                            {
+                                if (ploca[i][j] != 13)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        if (unos_reda_pocetni == unos_reda_pomak && unos_stupca_pocetni < unos_stupca_pomak)
+                        {
+                            for (int i = unos_stupca_pocetni + 1; i < unos_reda_pomak; i++)
+                            {
+                                if (ploca[unos_reda_pocetni][i] != 13)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        if (unos_reda_pocetni == unos_reda_pomak && unos_stupca_pocetni > unos_stupca_pomak)
+                        {
+                            for (int i = unos_stupca_pocetni - 1; i > unos_stupca_pomak; i--)
+                            {
+                                if (ploca[unos_reda_pocetni][i] != 13)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        if (unos_reda_pocetni > unos_reda_pomak && unos_stupca_pocetni == unos_stupca_pomak)
+                        {
+                            for (int i = unos_reda_pocetni - 1; i >= unos_reda_pomak; i--)
+                            {
+                                if (ploca[i][unos_stupca_pocetni] != 13)//reerwerwere
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        if (unos_reda_pocetni < unos_reda_pomak && unos_stupca_pocetni == unos_stupca_pomak)
+                        {
+                            for (int i = unos_reda_pocetni + 1; i < unos_reda_pomak; i++)
+                            {
+                                if (ploca[i][unos_stupca_pocetni] != 13)
+                                {
+                                    reset = 1;
+                                    break;
+                                }
+                                else
+                                    reset = 0;
+                            }
+                        }
+                        break;
+                    case 10:
+                        //crni kralj
+                        if ((unos_stupca_pomak == unos_stupca_pocetni + 1 || unos_stupca_pomak == unos_stupca_pocetni - 1 || unos_stupca_pomak == unos_stupca_pocetni) && (unos_reda_pomak == unos_reda_pocetni + 1 || unos_reda_pomak == unos_reda_pocetni - 1 || unos_reda_pomak == unos_reda_pocetni) && (unos_reda_pocetni != unos_reda_pomak || unos_stupca_pomak != unos_stupca_pocetni))
+                        {
+                            reset = 0;
+                            rosada_b1 = 0;
+                            rosada_b2 = 0;
+                        }
+                        if (rosada_b1 == 1 && unos_reda_pomak == 7 && unos_stupca_pomak == 1 && ploca[7][3] == 13 && ploca[7][2] == 13 && ploca[7][1] == 13)
+                        {
+                            rosada_b1 = 2;
+                            rosada_b2 = 0;
+                            reset = 0;
+                        }
+                        if (rosada_b2 == 1 && unos_reda_pomak == 7 && unos_stupca_pomak == 6 && ploca[7][5] == 13 && ploca[7][6] == 13)
+                        {
+                            rosada_c2 = 2;
+                            rosada_c1 = 0;
+                            reset = 0;
+                        }
+                        if (reset == 0)
+                        {
+                            pozicija_bk_i = unos_reda_pomak;
+                            pozicija_bk_j = unos_stupca_pomak;
+                        }
+                        break;
+                    case 11:
+                        //bijeli kralj
+                        if ((unos_stupca_pomak == unos_stupca_pocetni + 1 || unos_stupca_pomak == unos_stupca_pocetni - 1 || unos_stupca_pomak == unos_stupca_pocetni) && (unos_reda_pomak == unos_reda_pocetni + 1 || unos_reda_pomak == unos_reda_pocetni - 1 || unos_reda_pomak == unos_reda_pocetni) && (unos_reda_pocetni != unos_reda_pomak || unos_stupca_pomak != unos_stupca_pocetni))
+                        {
+                            reset = 0;
+                            rosada_c1 = 0;
+                            rosada_c2 = 0;
+                        }
+                        if (rosada_c1 == 1 && unos_reda_pomak == 0 && unos_stupca_pomak == 1 && ploca[0][3] == 13 && ploca[0][2] == 13 && ploca[0][1] == 13)
+                        {
+                            rosada_c1 = 2;
+                            rosada_c2 = 0;
+                            reset = 0;
+                        }
+                        if (rosada_c2 == 1 && unos_reda_pomak == 0 && unos_stupca_pomak == 6 && ploca[0][5] == 13 && ploca[0][6] == 13)
+                        {
+                            rosada_c2 = 2;
+                            rosada_c1 = 0;
+                            reset = 0;
+                        }
+                        if (reset == 0)
+                        {
+                            pozicija_ck_i = unos_reda_pomak;
+                            pozicija_ck_j = unos_stupca_pomak;
+                        }
+                        break;
+                    default:
+                    {
+                        break;
+                    }
+                    }
+                }
+
+                if (reset == 0)
+                {
+
+                    if (ploca[unos_reda_pomak][unos_stupca_pomak] == 10 || ploca[unos_reda_pomak][unos_stupca_pomak] == 11)
+                        krajigre = 1;
+
+                    if (rosada_b1 == 2)
+                    {
+                        ploca[7][1] = 10;
+                        ploca[7][2] = 2;
+                        ploca[7][0] = 13;
+                        ploca[7][4] = 13;
+                        rosada_b1 = 0;
+                        rosada_b2 = 0;
+                        rosada_c1 = 0;
+                        rosada_c2 = 0;
+                    }
+                    else if (rosada_b2 == 2)
+                    {
+                        ploca[7][6] = 10;
+                        ploca[7][5] = 2;
+                        ploca[7][7] = 13;
+                        ploca[7][4] = 13;
+                        rosada_b1 = 0;
+                        rosada_b2 = 0;
+                        rosada_c1 = 0;
+                        rosada_c2 = 0;
+                    }
+                    else if (rosada_c1 == 2)
+                    {
+                        ploca[0][1] = 11;
+                        ploca[0][2] = 3;
+                        ploca[0][0] = 13;
+                        ploca[0][4] = 13;
+                        rosada_b1 = 0;
+                        rosada_b2 = 0;
+                        rosada_c1 = 0;
+                        rosada_c2 = 0;
+                    }
+                    else if (rosada_c2 == 2)
+                    {
+                        ploca[7][6] = 10;
+                        ploca[7][5] = 2;
+                        ploca[7][7] = 13;
+                        ploca[7][4] = 13;
+                        rosada_b1 = 0;
+                        rosada_b2 = 0;
+                        rosada_c1 = 0;
+                        rosada_c2 = 0;
+                    }
+                    else
+                    {
+                        ploca[unos_reda_pomak][unos_stupca_pomak] = ploca[unos_reda_pocetni][unos_stupca_pocetni];
+                        ploca[unos_reda_pocetni][unos_stupca_pocetni] = 13;
+                    }
+
+                    while (1)
+                    {
+                        if (unos_reda_pomak == 0 && ploca[unos_reda_pomak][unos_stupca_pomak] == 0)
+                        {
+                            char zamjena_figure;
+                            cout << "Upisite oznaku figure koju zelite uzeti:\n" << endl;
+                            cin >> zamjena_figure;
+                            switch (zamjena_figure)
+                            {
+                            case 'T':
+                                ploca[unos_reda_pomak][unos_stupca_pomak] = 2;
+                                break;
+                            case 'S':
+                                ploca[unos_reda_pomak][unos_stupca_pomak] = 4;
+                                break;
+                            case 'L':
+                                ploca[unos_reda_pomak][unos_stupca_pomak] = 6;
+                                break;
+                            case 'Q':
+                                ploca[unos_reda_pomak][unos_stupca_pomak] = 8;
+                                break;
+                            default:
+                                cout << "krivi unos.\nPonovite unos." << endl;
+                            }
+                            if (ploca[unos_reda_pomak][unos_stupca_pomak] != 0)
+                                break;
+                        }
+                        else
+                            break;
+                    }
+                    while (1)
+                    {
+                        if (unos_reda_pomak == 7 && ploca[unos_reda_pomak][unos_stupca_pomak] == 1)
+                        {
+                            char zamjena_figure;
+                            cout << "Upisite oznaku figure koju zelite uzeti:\n" << endl;
+                            cin >> zamjena_figure;
+                            switch (zamjena_figure)
+                            {
+                            case 'T':
+                                ploca[unos_reda_pomak][unos_stupca_pomak] = 3;
+                                break;
+                            case 'S':
+                                ploca[unos_reda_pomak][unos_stupca_pomak] = 5;
+                                break;
+                            case 'L':
+                                ploca[unos_reda_pomak][unos_stupca_pomak] = 7;
+                                break;
+                            case 'Q':
+                                ploca[unos_reda_pomak][unos_stupca_pomak] = 9;
+                                break;
+                            default:
+                                cout << "krivi unos.\nPonovite unos." << endl;
+                            }
+                            if (ploca[unos_reda_pomak][unos_stupca_pomak] != 1)
+                                break;
+                        }
+                        else
+                            break;
+                    }
+
+                    if (napotezu % 2 != 0)
+                    {
+                        for (int t = 8, i = 0; i < 8; i++)
+                        {
+                            cout << "|";
+                            for (int j = 0; j < 8; j++)
+                            {
+                                int t = ploca[i][j];
+                                if (t % 2 == 0 && t != 13 && t != 14 && t != 15)
+                                {
+                                    cout << "B";
+                                    cout << figure[t] << "|";
+                                }
+                                if (t % 2 != 0 && t != 13 && t != 14 && t != 15)
+                                {
+                                    cout << "C";
+                                    cout << figure[t] << "|";
+                                }
+                                if (t == 13 || t == 14 || t == 15)
+                                    cout << "  |";
+                            }
+                            cout << " " << t << endl;
+                            t--;
+                        }
+                        for (char i = 'A'; i < 'I'; i++)
+                        {
+                            cout << "  " << i;
+                        }
+                        cout << endl << endl;
+                    }
+
+                    else
+                    {
+                        for (int t = 1, i = 7; i >= 0; i--)
+                        {
+                            cout << "|";
+                            for (int j = 7; j >= 0; j--)
+                            {
+                                int t = ploca[i][j];
+                                if (t % 2 == 0 && t != 13 && t != 14 && t != 15)
+                                {
+                                    cout << "B";
+                                    cout << figure[t] << "|";
+                                }
+                                if (t % 2 != 0 && t != 13 && t != 14 && t != 15)
+                                {
+                                    cout << "C";
+                                    cout << figure[t] << "|";
+                                }
+                                if (t == 13 || t == 14 || t == 15)
+                                    cout << "  |";
+                            }
+                            cout << " " << t << endl;
+                            t++;
+                        }
+                        for (char i = 'H'; i >= 'A'; i--)
+                        {
+                            cout << " " << i;
+                        }
+                        cout << endl << endl;
+                    }
+                    napotezu++;
+                }
+                else
+                    cout << "Krivi unos\nPonovite unos.\n\n" << endl;
+
+
+                if (krajigre == 1)
+                {
+                    if (napotezu % 2 == 1)
+                        cout << "Bijeli je pobjednik!!" << endl;
+                    else
+                        cout << "Crni je pobjednik!!" << endl;
+                    return 0;
+                }
+                //provjera saha za bijelog
+
+                for (int i = pozicija_bk_i + 1, j = pozicija_bk_j + 1; i < 8 && j < 8; i++, j++)
+                {
+                    if (ploca[i][j] != 13 && (ploca[i][j] == 9 || ploca[i][j] == 7))
+                    {
+                        bsah_dd = 1;
+                        break;
+                    }
+                    else
+                        bsah_dd = 0;
+                }
+
+                for (int i = pozicija_bk_i + 1, j = pozicija_bk_j - 1; i<8 && j>-1; i++, j--)
+                {
+                    if (ploca[i][j] != 13 && (ploca[i][j] == 9 || ploca[i][j] == 7))
+                    {
+                        bsah_dl = 1;
+                        break;
+                    }
+                    else
+                        bsah_dl = 0;
+                }
+
+
+                for (int i = pozicija_bk_i - 2, j = pozicija_bk_j + 2; i > -1 && j < 8; i--, j++)
+                {
+                    if (ploca[i][j] != 13 && (ploca[i][j] == 9 || ploca[i][j] == 7))
+                    {
+                        bsah_gd = 1;
+                        break;
+                    }
+                    else
+                        bsah_gd = 0;
+                }
+
+                for (int i = pozicija_bk_i - 2, j = pozicija_bk_j - 2; i > -1 && j > -1; i--, j--)
+                {
+                    if (ploca[i][j] != 13 && (ploca[i][j] == 9 || ploca[i][j] == 7))
+                    {
+                        bsah_gl = 1;
+                        break;
+                    }
+                    else
+                        bsah_gl = 0;
+                }
+
+                for (int i = pozicija_bk_i + 1; i < 8; i++)
+                {
+                    if (ploca[i][pozicija_bk_j] != 13 && (ploca[i][pozicija_bk_j] == 3 || ploca[i][pozicija_bk_j] == 9))
+                    {
+                        bsah_d = 1;
+                        break;
+                    }
+                    else
+                        bsah_d = 0;
+                }
+
+                for (int i = pozicija_bk_i - 1; i > -1; i--)
+                {
+                    if (ploca[i][pozicija_bk_j] != 13 && (ploca[i][pozicija_bk_j] == 3 || ploca[i][pozicija_bk_j] == 9))
+                    {
+                        bsah_g = 1;
+                        break;
+                    }
+                    else
+                        bsah_g = 0;
+                }
+
+                for (int j = pozicija_bk_j + 1; j < 8; j++)
+                {
+                    if (ploca[pozicija_bk_i][j] != 13 && (ploca[pozicija_bk_i][j] == 3 || ploca[pozicija_bk_i][j] == 9))
+                    {
+                        bsah_desno = 1;
+                        break;
+                    }
+                    else
+                        bsah_desno = 0;
+                }
+
+                for (int j = pozicija_bk_j - 1; j > -1; j--)
+                {
+                    if (ploca[pozicija_bk_i][j] != 13 && (ploca[pozicija_bk_i][j] == 3 || ploca[pozicija_bk_i][j] == 9))
+                    {
+                        bsah_l = 1;
+                        break;
+                    }
+                    else
+                        bsah_l = 0;
+                }
+
+                while (1)
+                {
+                    if (ploca[pozicija_bk_i + 2][pozicija_bk_j + 1] == 4 && pozicija_bk_i + 2 >= 0 && pozicija_bk_i + 2 < 8 && pozicija_bk_j + 1 >= 0 && pozicija_bk_j + 1 < 8)
+                        bsah_konj = 1;
+                    if (ploca[pozicija_bk_i + 2][pozicija_bk_j - 1] == 4 && pozicija_bk_i + 2 >= 0 && pozicija_bk_i + 2 < 8 && pozicija_bk_j - 1 >= 0 && pozicija_bk_j - 1 < 8)
+                        bsah_konj = 1;
+                    if (ploca[pozicija_bk_i + 1][pozicija_bk_j + 2] == 4 && pozicija_bk_i + 1 >= 0 && pozicija_bk_i + 1 < 8 && pozicija_bk_j + 2 >= 0 && pozicija_bk_j + 1 < 8)
+                        bsah_konj = 1;
+                    if (ploca[pozicija_bk_i + 1][pozicija_bk_j - 2] == 4 && pozicija_bk_i + 1 >= 0 && pozicija_bk_i + 1 < 8 && pozicija_bk_j - 2 >= 0 && pozicija_bk_j + 1 < 8)
+                        bsah_konj = 1;
+                    if (ploca[pozicija_bk_i - 2][pozicija_bk_j + 1] == 4 && pozicija_bk_i - 2 >= 0 && pozicija_bk_i - 1 < 8 && pozicija_bk_j + 1 >= 0 && pozicija_bk_j + 1 < 8)
+                        bsah_konj = 1;
+                    if (ploca[pozicija_bk_i - 2][pozicija_bk_j - 1] == 4 && pozicija_bk_i - 2 >= 0 && pozicija_bk_i - 1 < 8 && pozicija_bk_j - 1 >= 0 && pozicija_bk_j + 1 < 8)
+                        bsah_konj = 1;
+                    if (ploca[pozicija_bk_i - 1][pozicija_bk_j + 2] == 4 && pozicija_bk_i - 1 >= 0 && pozicija_bk_i - 2 < 8 && pozicija_bk_j + 2 >= 0 && pozicija_bk_j + 1 < 8)
+                        bsah_konj = 1;
+                    if (ploca[pozicija_bk_i - 1][pozicija_bk_j - 2] == 4 && pozicija_bk_i - 1 >= 0 && pozicija_bk_i - 2 < 8 && pozicija_bk_j - 2 >= 0 && pozicija_bk_j + 1 < 8)
+                        bsah_konj = 1;
+                    break;
+                }
+
+                if (ploca[pozicija_bk_i - 1][pozicija_bk_j - 1] == 1 || ploca[pozicija_bk_i - 1][pozicija_bk_j + 1] == 1 || ploca[pozicija_bk_i - 1][pozicija_bk_j - 1] == 9 || ploca[pozicija_bk_i + 1][pozicija_bk_j - 1] == 9)
+                    bsah_pijun = 1;
+
+                if (bsah_dd == 1 || bsah_dl == 1 || bsah_gl == 1 || bsah_gd == 1 || bsah_g == 1 || bsah_desno == 1 || bsah_d == 1 || bsah_l == 1 || bsah_konj == 1 || bsah_pijun == 1)
+                    printf("\nSAH NA BIJELOG!!!\n");
+
+
+                for (int i = pozicija_ck_i + 1, j = pozicija_ck_j + 1; i < 8 && j < 8; i++, j++)
+                {
+                    if (ploca[i][j] != 13 && (ploca[i][j] == 8 || ploca[i][j] == 6))
+                    {
+                        csah_dd = 1;
+                        break;
+                    }
+                    else
+                        csah_dd = 0;
+                }
+
+                for (int i = pozicija_ck_i + 1, j = pozicija_ck_j - 1; i<8 && j>-1; i++, j--)
+                {
+                    if (ploca[i][j] != 13 && (ploca[i][j] == 8 || ploca[i][j] == 6))
+                    {
+                        csah_dl = 1;
+                        break;
+                    }
+                    else
+                        csah_dl = 0;
+                }
+
+
+                for (int i = pozicija_ck_i - 2, j = pozicija_ck_j + 2; i > -1 && j < 8; i--, j++)
+                {
+                    if (ploca[i][j] != 13 && (ploca[i][j] == 8 || ploca[i][j] == 6))
+                    {
+                        csah_gd = 1;
+                        break;
+                    }
+                    else
+                        csah_gd = 0;
+                }
+
+                for (int i = pozicija_ck_i - 2, j = pozicija_ck_j - 2; i > -1 && j > -1; i--, j--)
+                {
+                    if (ploca[i][j] != 13 && (ploca[i][j] == 8 || ploca[i][j] == 6))
+                    {
+                        csah_gl = 1;
+                        break;
+                    }
+                    else
+                        csah_gl = 0;
+                }
+
+                for (int i = pozicija_ck_i + 1; i < 8; i++)
+                {
+                    if (ploca[i][pozicija_ck_j] != 13 && (ploca[i][pozicija_ck_j] == 2 || ploca[i][pozicija_ck_j] == 8))
+                    {
+                        csah_d = 1;
+                        break;
+                    }
+                    else
+                        csah_d = 0;
+                }
+
+                for (int i = pozicija_ck_i - 1; i > -1; i--)
+                {
+                    if (ploca[i][pozicija_ck_j] != 13 && (ploca[i][pozicija_ck_j] == 2 || ploca[i][pozicija_ck_j] == 8))
+                    {
+                        csah_g = 1;
+                        break;
+                    }
+                    else
+                        csah_g = 0;
+                }
+
+                for (int j = pozicija_ck_j + 1; j < 8; j++)
+                {
+                    if (ploca[pozicija_ck_i][j] != 13 && (ploca[pozicija_ck_i][j] == 2 || ploca[pozicija_ck_i][j] == 8))
+                    {
+                        csah_desno = 1;
+                        break;
+                    }
+                    else
+                        csah_desno = 0;
+                }
+
+                for (int j = pozicija_ck_j - 1; j > -1; j--)
+                {
+                    if (ploca[pozicija_ck_i][j] != 13 && (ploca[pozicija_ck_i][j] == 2 || ploca[pozicija_ck_i][j] == 8))
+                    {
+                        csah_l = 1;
+                        break;
+                    }
+                    else
+                        csah_l = 0;
+                }
+
+                while (1)
+                {
+                    if (ploca[pozicija_ck_i + 2][pozicija_ck_j + 1] == 4 && pozicija_ck_i + 2 >= 0 && pozicija_ck_i + 2 < 8 && pozicija_ck_j + 1 >= 0 && pozicija_ck_j + 1 < 8)
+                        csah_konj = 1;
+                    if (ploca[pozicija_ck_i + 2][pozicija_ck_j - 1] == 4 && pozicija_ck_i + 2 >= 0 && pozicija_ck_i + 2 < 8 && pozicija_ck_j - 1 >= 0 && pozicija_ck_j - 1 < 8)
+                        csah_konj = 1;
+                    if (ploca[pozicija_ck_i + 1][pozicija_ck_j + 2] == 4 && pozicija_ck_i + 1 >= 0 && pozicija_ck_i + 1 < 8 && pozicija_ck_j + 2 >= 0 && pozicija_ck_j + 1 < 8)
+                        csah_konj = 1;
+                    if (ploca[pozicija_ck_i + 1][pozicija_ck_j - 2] == 4 && pozicija_ck_i + 1 >= 0 && pozicija_ck_i + 1 < 8 && pozicija_ck_j - 2 >= 0 && pozicija_ck_j + 1 < 8)
+                        csah_konj = 1;
+                    if (ploca[pozicija_ck_i - 2][pozicija_ck_j + 1] == 4 && pozicija_ck_i - 2 >= 0 && pozicija_ck_i - 1 < 8 && pozicija_ck_j + 1 >= 0 && pozicija_ck_j + 1 < 8)
+                        csah_konj = 1;
+                    if (ploca[pozicija_ck_i - 2][pozicija_ck_j - 1] == 4 && pozicija_ck_i - 2 >= 0 && pozicija_ck_i - 1 < 8 && pozicija_ck_j - 1 >= 0 && pozicija_ck_j + 1 < 8)
+                        csah_konj = 1;
+                    if (ploca[pozicija_ck_i - 1][pozicija_ck_j + 2] == 4 && pozicija_ck_i - 1 >= 0 && pozicija_ck_i - 2 < 8 && pozicija_ck_j + 2 >= 0 && pozicija_ck_j + 1 < 8)
+                        csah_konj = 1;
+                    if (ploca[pozicija_ck_i - 1][pozicija_ck_j - 2] == 4 && pozicija_ck_i - 1 >= 0 && pozicija_ck_i - 2 < 8 && pozicija_ck_j - 2 >= 0 && pozicija_ck_j + 1 < 8)
+                        csah_konj = 1;
+                    break;
+                }
+
+                if (ploca[pozicija_ck_i + 1][pozicija_ck_j - 1] == 0 || ploca[pozicija_ck_i + 1][pozicija_ck_j + 1] == 0 || ploca[pozicija_bk_i + 1][pozicija_bk_j - 1] == 8 || ploca[pozicija_bk_i + 1][pozicija_bk_j + 1] == 8)
+                    csah_pijun = 1;
+
+                if (csah_dd == 1 || csah_dl == 1 || csah_gl == 1 || csah_gd == 1 || csah_g == 1 || csah_desno == 1 || csah_d == 1 || csah_l == 1 || csah_konj == 1 || csah_pijun == 1)
+                    cout << "\nSAH NA CRNOG!!!\n" << endl;
+
+            }
 
         }
 
         else if (izbor == 2)
         {
-            //prvo treba alg. za citanje 
+            //prvo treba alg. za citanje
         }
 
         else if (izbor == 3)
@@ -363,7 +1531,7 @@ int main()
 
         else if (izbor == 5)
         {
-
+            //pravila
         }
 
         else if (izbor == 6)
