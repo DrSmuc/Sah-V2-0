@@ -3,6 +3,7 @@
 #include<string>
 #include<algorithm>
 #include<string.h>
+#include<Windows.h>
 using namespace std;
 
 void naslov()
@@ -202,6 +203,13 @@ int main()
             }
 
             //stari kod
+            SetConsoleOutputCP(65001);
+            HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+            char q[] = "\xE2\x99\x94 ";
+            SetConsoleTextAttribute(hConsole, 16);
+            cout << q;
+            SetConsoleTextAttribute(hConsole, 15);
+            pause();
 
         }
 
