@@ -203,7 +203,7 @@ int main()
             }
 
             //stari kod
-<<<<<<< HEAD
+
             char  figure[13], stupac_pretvarac[8];
             int ploca[8][8], krajigre = 0, rosada_b1 = 1, rosada_b2 = 1, rosada_c1 = 1, rosada_c2 = 1, pozicija_ck_i = 0, pozicija_bk_i = 7, pozicija_bk_j = 4, pozicija_ck_j = 4;
             cout << "Upisite ime bijeli: \n" << endl;;
@@ -1372,7 +1372,7 @@ int main()
                     cout << "\nSAH NA CRNOG!!!\n" << endl;
 
             }
-=======
+
             SetConsoleOutputCP(65001);
             HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
             char q[] = "\xE2\x99\x94 ";
@@ -1380,7 +1380,7 @@ int main()
             cout << q;
             SetConsoleTextAttribute(hConsole, 15);
             pause();
->>>>>>> ccb7efd47aa758d9b73ab17b23d35d55e1a65f0a
+
 
         }
 
