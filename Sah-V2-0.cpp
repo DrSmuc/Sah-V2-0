@@ -4,6 +4,8 @@
 #include<algorithm>
 #include<string.h>
 #include<Windows.h>
+#include<cstdio>
+#include<cstdlib>
 using namespace std;
 
 void naslov()
@@ -29,6 +31,66 @@ struct user
     short int los = 0;
     short int drw = 0;
 };
+
+struct r_slot
+{
+    char player1[51] = "empty";
+    char player2[51] = "empty";
+    char winner[51] = "empty";
+};
+
+void replay(fstream &file)
+{
+
+}
+
+void board_display(int **ploca)
+{
+    wchar_t figure[12];
+
+    figure[0] = ' ';
+    figure[1] = ' ';
+    figure[2] = ' ';
+    figure[3] = ' ';
+    figure[4] = ' ';
+    figure[5] = ' ';
+    figure[6] = ' ';
+    figure[7] = ' ';
+    figure[8] = ' ';
+    figure[9] = ' ';
+    figure[10] = ' ';
+    figure[11] = ' ';
+
+    //ispis ploce
+    for (int t = 8, i = 0; i < 8; i++)
+    {
+        cout << "|";
+        for (int j = 0; j < 8; j++)
+        {
+            int t = ploca[i][j];
+            if (t % 2 == 0 && t != 13 && t != 14 && t != 15)
+            {
+                cout << "B";
+                cout << figure[t] << "|";
+            }
+            if (t % 2 != 0 && t != 13 && t != 14 && t != 15)
+            {
+                cout << "C";
+                cout << figure[t] << "|";
+            }
+            if (t == 13 || t == 14 || t == 15)
+                cout << "  |";
+        }
+        cout << " " << t << endl;
+        t--;
+    }
+    cout << " ";
+    for (char i = 'A'; i < 'I'; i++)
+    {
+        cout << i << "  ";
+    }
+    cout << endl << endl;
+}
 
 void pause() //hvala profesore :)
 {
@@ -85,13 +147,25 @@ int main()
 {
     int br_user;
     user a[50];
+    r_slot s[5];
 
     fstream users;
-    users.open("users.bin", ios::in | ios::binary);
+    users.open("data/users.bin", ios::in | ios::binary);
     users.read((char*)&br_user, sizeof(br_user));
     users.read((char*)&a, sizeof(user) * br_user);
     users.close();
     sort(a, a + br_user, poIme);
+
+    fstream replay_list;
+    replay_list.open("data/replays/list.txt", ios::in|ios::binary);
+    replay_list.read((char*)&s, sizeof(r_slot) * 5);
+    replay_list.close();
+
+    fstream replay_open;
+
+    int** ploca = new int*[8];
+    for (int i = 0; i < 8; i++)
+        ploca[i] = new int[8];
 
     int izbor;
 
@@ -205,7 +279,7 @@ int main()
             //stari kod
 
             char  figure[13], stupac_pretvarac[8];
-            int ploca[8][8], krajigre = 0, rosada_b1 = 1, rosada_b2 = 1, rosada_c1 = 1, rosada_c2 = 1, pozicija_ck_i = 0, pozicija_bk_i = 7, pozicija_bk_j = 4, pozicija_ck_j = 4;
+            int krajigre = 0, rosada_b1 = 1, rosada_b2 = 1, rosada_c1 = 1, rosada_c2 = 1, pozicija_ck_i = 0, pozicija_bk_i = 7, pozicija_bk_j = 4, pozicija_ck_j = 4;
             cout << "Upisite ime bijeli: \n" << endl;;
             
 
@@ -1122,6 +1196,9 @@ int main()
                         }
                         cout << endl << endl;
                     }
+
+                    board_display(ploca);
+
                     napotezu++;
                 }
                 else
@@ -1227,8 +1304,7 @@ int main()
                         bsah_l = 0;
                 }
 
-                while (1)
-                {
+                
                     if (ploca[pozicija_bk_i + 2][pozicija_bk_j + 1] == 4 && pozicija_bk_i + 2 >= 0 && pozicija_bk_i + 2 < 8 && pozicija_bk_j + 1 >= 0 && pozicija_bk_j + 1 < 8)
                         bsah_konj = 1;
                     if (ploca[pozicija_bk_i + 2][pozicija_bk_j - 1] == 4 && pozicija_bk_i + 2 >= 0 && pozicija_bk_i + 2 < 8 && pozicija_bk_j - 1 >= 0 && pozicija_bk_j - 1 < 8)
@@ -1245,8 +1321,7 @@ int main()
                         bsah_konj = 1;
                     if (ploca[pozicija_bk_i - 1][pozicija_bk_j - 2] == 4 && pozicija_bk_i - 1 >= 0 && pozicija_bk_i - 2 < 8 && pozicija_bk_j - 2 >= 0 && pozicija_bk_j + 1 < 8)
                         bsah_konj = 1;
-                    break;
-                }
+                    
 
                 if (ploca[pozicija_bk_i - 1][pozicija_bk_j - 1] == 1 || ploca[pozicija_bk_i - 1][pozicija_bk_j + 1] == 1 || ploca[pozicija_bk_i - 1][pozicija_bk_j - 1] == 9 || ploca[pozicija_bk_i + 1][pozicija_bk_j - 1] == 9)
                     bsah_pijun = 1;
@@ -1344,8 +1419,6 @@ int main()
                         csah_l = 0;
                 }
 
-                while (1)
-                {
                     if (ploca[pozicija_ck_i + 2][pozicija_ck_j + 1] == 4 && pozicija_ck_i + 2 >= 0 && pozicija_ck_i + 2 < 8 && pozicija_ck_j + 1 >= 0 && pozicija_ck_j + 1 < 8)
                         csah_konj = 1;
                     if (ploca[pozicija_ck_i + 2][pozicija_ck_j - 1] == 4 && pozicija_ck_i + 2 >= 0 && pozicija_ck_i + 2 < 8 && pozicija_ck_j - 1 >= 0 && pozicija_ck_j - 1 < 8)
@@ -1362,8 +1435,7 @@ int main()
                         csah_konj = 1;
                     if (ploca[pozicija_ck_i - 1][pozicija_ck_j - 2] == 4 && pozicija_ck_i - 1 >= 0 && pozicija_ck_i - 2 < 8 && pozicija_ck_j - 2 >= 0 && pozicija_ck_j + 1 < 8)
                         csah_konj = 1;
-                    break;
-                }
+                    
 
                 if (ploca[pozicija_ck_i + 1][pozicija_ck_j - 1] == 0 || ploca[pozicija_ck_i + 1][pozicija_ck_j + 1] == 0 || ploca[pozicija_bk_i + 1][pozicija_bk_j - 1] == 8 || ploca[pozicija_bk_i + 1][pozicija_bk_j + 1] == 8)
                     csah_pijun = 1;
@@ -1372,21 +1444,42 @@ int main()
                     cout << "\nSAH NA CRNOG!!!\n" << endl;
 
             }
-
-            SetConsoleOutputCP(65001);
-            HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-            char q[] = "\xE2\x99\x94 ";
-            SetConsoleTextAttribute(hConsole, 16);
-            cout << q;
-            SetConsoleTextAttribute(hConsole, 15);
-            pause();
-
-
         }
 
         else if (izbor == 2)
         {
-            //prvo treba alg. za citanje
+            int r_izbor;
+            while (1)
+            {
+                system("cls");
+                cout << "\t1.\t2.\t3.\t4.\t5." << endl;
+                cout << "=================================================" << endl;
+                cout << "P1\t";
+                for (int i = 0; i < 5; i++)
+                    cout << s[i].player1 << "\t";
+                cout << endl << "P2\t";
+                for (int i = 0; i < 5; i++)
+                    cout << s[i].player1 << "\t";
+                cout << "Winner\t";
+                for (int i = 0; i < 5; i++)
+                    cout << s[i].winner << "\t";
+                cout << "\n\nExit [0]" << endl;
+                cout << "Izaberite igru koji zelite vidjeti:  ";
+                cin >> r_izbor;
+
+                if (r_izbor == 0)
+                {
+                    cout << "Povratak!" << endl;
+                    pause();
+                    break;
+                }
+                else if (r_izbor == 1)
+                {
+                    replay_open.open("data/replays/slot_1.txt", ios::in);
+                    replay(replay_open);
+                }
+
+            }
         }
 
         else if (izbor == 3)
@@ -1543,6 +1636,13 @@ int main()
         else if (izbor == 5)
         {
             //pravila
+            SetConsoleOutputCP(65001);
+            HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+            char q[] = "\xE2\x99\x94 ";
+            SetConsoleTextAttribute(hConsole, 16);
+            cout << q;
+            SetConsoleTextAttribute(hConsole, 15);
+            pause();
         }
 
         else if (izbor == 6)
@@ -1553,7 +1653,8 @@ int main()
 
         else
         {
-
+            cout << "Krivi unis!" << endl;
+            pause();
         }
     }
 
