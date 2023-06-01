@@ -6,6 +6,7 @@
 #include<Windows.h>
 #include<cstdio>
 #include<cstdlib>
+
 using namespace std;
 
 void naslov()
@@ -39,12 +40,7 @@ struct r_slot
     char winner[51] = "empty";
 };
 
-void replay(fstream &file)
-{
-
-}
-
-void board_display(int **ploca)
+void board_display(int** ploca)
 {
     wchar_t figure[12];
 
@@ -91,6 +87,58 @@ void board_display(int **ploca)
     }
     cout << endl << endl;
 }
+
+bool is_number(const string& s) { return !s.empty() && all_of(s.begin(), s.end(), ::isdigit); }
+
+void replay(fstream &file, string p1, string p2)
+{
+    int** ploca = new int* [8];
+    for (int i = 0; i < 8; i++)
+        ploca[i] = new int[8];
+    ploca[0][0] = 3;
+    ploca[0][1] = 5;
+    ploca[0][2] = 7;
+    ploca[0][3] = 9;
+    ploca[0][4] = 11;
+    ploca[0][5] = 7;
+    ploca[0][6] = 5;
+    ploca[0][7] = 3;
+    ploca[7][0] = 2;
+    ploca[7][1] = 4;
+    ploca[7][2] = 6;
+    ploca[7][3] = 8;
+    ploca[7][4] = 10;
+    ploca[7][5] = 6;
+    ploca[7][6] = 4;
+    ploca[7][7] = 2;
+    for (int j = 0; j < 8; j++)
+        ploca[1][j] = 1;
+    for (int j = 0; j < 8; j++)
+        ploca[6][j] = 0;
+
+    string izbor;
+    string move;
+
+    while (1)
+    {
+        board_display(ploca);
+        cout << "A - next\nD - back\nBroj - jump na taj potez" << endl;
+        cin >> izbor;
+        if (is_number(izbor))
+        {
+            int col, row;
+            file.seekg(0);
+            for (int i = 0; i < stoi(izbor); i++)
+            {
+                getline(file, move);
+                row = stoi(move)%10;
+                col = stoi(move)/10;
+
+            }
+        }
+    }
+}
+
 
 void pause() //hvala profesore :)
 {
@@ -166,6 +214,26 @@ int main()
     int** ploca = new int*[8];
     for (int i = 0; i < 8; i++)
         ploca[i] = new int[8];
+    ploca[0][0] = 3;
+    ploca[0][1] = 5;
+    ploca[0][2] = 7;
+    ploca[0][3] = 9;
+    ploca[0][4] = 11;
+    ploca[0][5] = 7;
+    ploca[0][6] = 5;
+    ploca[0][7] = 3;
+    ploca[7][0] = 2;
+    ploca[7][1] = 4;
+    ploca[7][2] = 6;
+    ploca[7][3] = 8;
+    ploca[7][4] = 10;
+    ploca[7][5] = 6;
+    ploca[7][6] = 4;
+    ploca[7][7] = 2;
+    for (int j = 0; j < 8; j++)
+        ploca[1][j] = 1;
+    for (int j = 0; j < 8; j++)
+        ploca[6][j] = 0;
 
     int izbor;
 
@@ -1460,7 +1528,7 @@ int main()
                 cout << endl << "P2\t";
                 for (int i = 0; i < 5; i++)
                     cout << s[i].player1 << "\t";
-                cout << "Winner\t";
+                cout << endl << "Winner\t";
                 for (int i = 0; i < 5; i++)
                     cout << s[i].winner << "\t";
                 cout << "\n\nExit [0]" << endl;
@@ -1476,7 +1544,27 @@ int main()
                 else if (r_izbor == 1)
                 {
                     replay_open.open("data/replays/slot_1.txt", ios::in);
-                    replay(replay_open);
+                    replay(replay_open, s[0].player1, s[0].player2);
+                }
+                else if (r_izbor == 1)
+                {
+                    replay_open.open("data/replays/slot_2.txt", ios::in);
+                    replay(replay_open, s[1].player1, s[1].player2);
+                }
+                else if (r_izbor == 1)
+                {
+                    replay_open.open("data/replays/slot_3.txt", ios::in);
+                    replay(replay_open, s[2].player1, s[2].player2);
+                }
+                else if (r_izbor == 1)
+                {
+                    replay_open.open("data/replays/slot_4.txt", ios::in);
+                    replay(replay_open, s[3].player1, s[3].player2);
+                }
+                else if (r_izbor == 1)
+                {
+                    replay_open.open("data/replays/slot_5.txt", ios::in);
+                    replay(replay_open, s[4].player1, s[4].player2);
                 }
 
             }
