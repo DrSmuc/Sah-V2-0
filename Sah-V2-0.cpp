@@ -3,6 +3,10 @@
 #include<string>
 #include<algorithm>
 #include<string.h>
+#include<Windows.h>
+#include<cstdio>
+#include<cstdlib>
+
 using namespace std;
 
 void naslov()
@@ -209,6 +213,26 @@ int main()
     int** ploca = new int*[8];
     for (int i = 0; i < 8; i++)
         ploca[i] = new int[8];
+    ploca[0][0] = 3;
+    ploca[0][1] = 5;
+    ploca[0][2] = 7;
+    ploca[0][3] = 9;
+    ploca[0][4] = 11;
+    ploca[0][5] = 7;
+    ploca[0][6] = 5;
+    ploca[0][7] = 3;
+    ploca[7][0] = 2;
+    ploca[7][1] = 4;
+    ploca[7][2] = 6;
+    ploca[7][3] = 8;
+    ploca[7][4] = 10;
+    ploca[7][5] = 6;
+    ploca[7][6] = 4;
+    ploca[7][7] = 2;
+    for (int j = 0; j < 8; j++)
+        ploca[1][j] = 1;
+    for (int j = 0; j < 8; j++)
+        ploca[6][j] = 0;
 
     for (int i = 0; i < 8; i++)
         for (int j = 0; j < 8; j++)
@@ -1463,7 +1487,27 @@ int main()
                 else if (r_izbor == 1)
                 {
                     replay_open.open("data/replays/slot_1.txt", ios::in);
-                    replay(replay_open);
+                    replay(replay_open, s[0].player1, s[0].player2);
+                }
+                else if (r_izbor == 1)
+                {
+                    replay_open.open("data/replays/slot_2.txt", ios::in);
+                    replay(replay_open, s[1].player1, s[1].player2);
+                }
+                else if (r_izbor == 1)
+                {
+                    replay_open.open("data/replays/slot_3.txt", ios::in);
+                    replay(replay_open, s[2].player1, s[2].player2);
+                }
+                else if (r_izbor == 1)
+                {
+                    replay_open.open("data/replays/slot_4.txt", ios::in);
+                    replay(replay_open, s[3].player1, s[3].player2);
+                }
+                else if (r_izbor == 1)
+                {
+                    replay_open.open("data/replays/slot_5.txt", ios::in);
+                    replay(replay_open, s[4].player1, s[4].player2);
                 }
 
             }
