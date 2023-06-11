@@ -1747,16 +1747,31 @@ after_game:
         else if (izbor == 5)
         {
             //pravila
+
+            system("cls");
+                cout << "Figure: " << endl;
+                cout << endl;
+                cout << "B - BIJELA FIGURA" << endl;
+                cout << "C - CRNA FIGURA" << endl;
+                cout << "P - PJESACI" << endl;
+                cout << "T - TOP" << endl;
+                cout << "S - SKAKAC" << endl;
+                cout << "L - LOVAC" << endl;
+                cout << "Q - KRALJICA" << endl;
+                cout << "K - KRALJ" << endl;
+                cout << endl;
+                cout << "Pomicanje figura: " << endl;
+                cout << endl;
+                cout << "Za pomicanje figura upisite koordinate polja figure koju zelite pomaknuti potom mjesto polja gdje ju zelite pomaknuti." << endl;
+                cout << "Prvo upisite stupac a potom redak." << endl;
+                pause();
+
             /*SetConsoleOutputCP(65001);
             HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
             char q[] = "\xE2\x99\x94 ";
             SetConsoleTextAttribute(hConsole, 16);
             cout << q;
             SetConsoleTextAttribute(hConsole, 15);*/
-
-            board_display(ploca, 1);
-            
-            board_display(ploca, 2);
 
           
         }
