@@ -48,7 +48,7 @@ void pause() //hvala profesore :)
     getline(cin, dummy);
 }
 
-void replay(fstream &file)
+void replay(fstream &file, string p1, string p2)
 {
 
 }
@@ -1446,7 +1446,7 @@ int main()
             }
             else if (izbor == 2)
             {
-                replay(tmp);
+                replay(tmp, player1, player2);
             }
             else
             {
