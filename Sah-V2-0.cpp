@@ -3,9 +3,6 @@
 #include<string>
 #include<algorithm>
 #include<string.h>
-#include<Windows.h>
-#include<cstdio>
-#include<cstdlib>
 using namespace std;
 
 void naslov()
@@ -39,65 +36,111 @@ struct r_slot
     char winner[51] = "empty";
 };
 
-void replay(fstream &file)
-{
-
-}
-
-void board_display(int **ploca)
-{
-    wchar_t figure[12];
-
-    figure[0] = ' ';
-    figure[1] = ' ';
-    figure[2] = ' ';
-    figure[3] = ' ';
-    figure[4] = ' ';
-    figure[5] = ' ';
-    figure[6] = ' ';
-    figure[7] = ' ';
-    figure[8] = ' ';
-    figure[9] = ' ';
-    figure[10] = ' ';
-    figure[11] = ' ';
-
-    //ispis ploce
-    for (int t = 8, i = 0; i < 8; i++)
-    {
-        cout << "|";
-        for (int j = 0; j < 8; j++)
-        {
-            int t = ploca[i][j];
-            if (t % 2 == 0 && t != 13 && t != 14 && t != 15)
-            {
-                cout << "B";
-                cout << figure[t] << "|";
-            }
-            if (t % 2 != 0 && t != 13 && t != 14 && t != 15)
-            {
-                cout << "C";
-                cout << figure[t] << "|";
-            }
-            if (t == 13 || t == 14 || t == 15)
-                cout << "  |";
-        }
-        cout << " " << t << endl;
-        t--;
-    }
-    cout << " ";
-    for (char i = 'A'; i < 'I'; i++)
-    {
-        cout << i << "  ";
-    }
-    cout << endl << endl;
-}
-
 void pause() //hvala profesore :)
 {
     cout << endl << "Pritisnite enter za nastavak...";
     string dummy;
     cin.ignore();
     getline(cin, dummy);
+}
+
+void replay(fstream &file)
+{
+
+}
+
+void board_display(int **ploca, int napotezu)
+{
+    char  figure[13], stupac_pretvarac[8];
+
+    figure[0] = 'P';
+    figure[1] = 'P';
+    figure[2] = 'T';
+    figure[3] = 'T';
+    figure[4] = 'S';
+    figure[5] = 'S';
+    figure[6] = 'L';
+    figure[7] = 'L';
+    figure[8] = 'Q';
+    figure[9] = 'Q';
+    figure[10] = 'K';
+    figure[11] = 'K';
+    int pb = 0;
+    for (int i = 0; i < 8; i++)
+        for (char j = 'A'; j < 'I'; j++)
+            stupac_pretvarac[i] = j;
+    for (int i = 'a'; i < 'i'; i++)
+    {
+        stupac_pretvarac[pb] = i;
+        pb++;
+    }
+
+    system("cls");
+
+    //ispis ploce
+    if (napotezu % 2 != 0)
+    {
+        for (int t = 8, i = 0; i < 8; i++)
+        {
+            cout << "|";
+            for (int j = 0; j < 8; j++)
+            {
+                int t = ploca[i][j];
+                if (t % 2 == 0 && t != 13 && t != 14 && t != 15)
+                {
+                    cout << "B";
+                    cout << figure[t] << "|";
+                }
+                if (t % 2 != 0 && t != 13 && t != 14 && t != 15)
+                {
+                    cout << "C";
+                    cout << figure[t] << "|";
+                }
+                if (t == 13 || t == 14 || t == 15)
+                    cout << "  |";
+            }
+            cout << " " << t << endl;
+            t--;
+        }
+        cout << " ";
+        for (char i = 'A'; i < 'I'; i++)
+        {
+            cout << i << "  ";
+        }
+        cout << endl << endl;
+    }
+
+    else
+    {
+        for (int t = 1, i = 7; i >= 0; i--)
+        {
+            cout << "|";
+            for (int j = 7; j >= 0; j--)
+            {
+                int t = ploca[i][j];
+                if (t % 2 == 0 && t != 13 && t != 14 && t != 15)
+                {
+                    cout << "B";
+                    cout << figure[t] << "|";
+                }
+                if (t % 2 != 0 && t != 13 && t != 14 && t != 15)
+                {
+                    cout << "C";
+                    cout << figure[t] << "|";
+                }
+                if (t == 13 || t == 14 || t == 15)
+                    cout << "  |";
+            }
+            cout << " " << t << endl;
+            t++;
+        }
+        for (char i = 'H'; i >= 'A'; i--)
+        {
+            cout << "  " << i;
+        }
+        cout << endl << endl;
+    }
+    pause();
 }
 
 void new_user(user* a, int& br_user)
@@ -166,6 +209,33 @@ int main()
     int** ploca = new int*[8];
     for (int i = 0; i < 8; i++)
         ploca[i] = new int[8];
+
+    for (int i = 0; i < 8; i++)
+        for (int j = 0; j < 8; j++)
+            ploca[i][j] = 13;
+
+    ploca[0][0] = 3;
+    ploca[0][1] = 5;
+    ploca[0][2] = 7;
+    ploca[0][3] = 9;
+    ploca[0][4] = 11;
+    ploca[0][5] = 7;
+    ploca[0][6] = 5;
+    ploca[0][7] = 3;
+    ploca[7][0] = 2;
+    ploca[7][1] = 4;
+    ploca[7][2] = 6;
+    ploca[7][3] = 8;
+    ploca[7][4] = 10;
+    ploca[7][5] = 6;
+    ploca[7][6] = 4;
+    ploca[7][7] = 2;
+
+    for (int j = 0; j < 8; j++)
+        ploca[1][j] = 1;
+    for (int j = 0; j < 8; j++)
+        ploca[6][j] = 0;
+
 
     int izbor;
 
@@ -280,8 +350,11 @@ int main()
 
             char  figure[13], stupac_pretvarac[8];
             int krajigre = 0, rosada_b1 = 1, rosada_b2 = 1, rosada_c1 = 1, rosada_c2 = 1, pozicija_ck_i = 0, pozicija_bk_i = 7, pozicija_bk_j = 4, pozicija_ck_j = 4;
-            cout << "Upisite ime bijeli: \n" << endl;;
             
+            fstream tmp;
+            tmp.open("temp.txt", ios::out|ios::in);
+            
+            cout << "Upisite ime bijeli: \n" << endl;
 
             cout << "\n\nFigure: \n\nB - BIJELA FIGURA \nC - CRNA FIGURA \nP - PJESACI \nT - TOP \nS - SKAKAC \nL - LOVAC \nQ - KRALJICA \nK - KRALJ\n\n" << endl;
 
@@ -347,68 +420,8 @@ int main()
                 int unos_reda_pomak, unos_stupca_pocetni, reset = 1, unos_stupca_pomak, unos_reda_pocetni, red_pocetni, red_pomak, bsah_dd = 0, bsah_dl = 0, bsah_gl = 0, bsah_gd = 0, bsah_g = 0, bsah_desno = 0, bsah_d = 0, bsah_l = 0, bsah_pijun = 0, bsah_konj = 0, csah_dd = 0, csah_dl = 0, csah_gl = 0, csah_gd = 0, csah_g = 0, csah_desno = 0, csah_d = 0, csah_l = 0, csah_pijun = 0, csah_konj = 0;
                 char stupac_pocetni, stupac_pomak, zamjena_figure;
 
-                if (napotezu % 2 != 0)
-                {
-                    for (int t = 8, i = 0; i < 8; i++)
-                    {
-                        cout << "|";
-                        for (int j = 0; j < 8; j++)
-                        {
-                            int t = ploca[i][j];
-                            if (t % 2 == 0 && t != 13 && t != 14 && t != 15)
-                            {
-                                cout << "B";
-                                cout << figure[t] << "|";
-                            }
-                            if (t % 2 != 0 && t != 13 && t != 14 && t != 15)
-                            {
-                                cout << "C";
-                                cout << figure[t] << "|";
-                            }
-                            if (t == 13 || t == 14 || t == 15)
-                                cout << "  |";
-                        }
-                        cout << " " << t << endl;
-                        t--;
-                    }
-                    cout << " ";
-                    for (char i = 'A'; i < 'I'; i++)
-                    {
-                        cout << i << "  ";
-                    }
-                    cout << endl << endl;
-                }
 
-                else
-                {
-                    for (int t = 1, i = 7; i >= 0; i--)
-                    {
-                        cout << "|";
-                        for (int j = 7; j >= 0; j--)
-                        {
-                            int t = ploca[i][j];
-                            if (t % 2 == 0 && t != 13 && t != 14 && t != 15)
-                            {
-                                cout << "B";
-                                cout << figure[t] << "|";
-                            }
-                            if (t % 2 != 0 && t != 13 && t != 14 && t != 15)
-                            {
-                                cout << "C";
-                                cout << figure[t] << "|";
-                            }
-                            if (t == 13 || t == 14 || t == 15)
-                                cout << "  |";
-                        }
-                        cout << " " << t << endl;
-                        t++;
-                    }
-                    for (char i = 'H'; i >= 'A'; i--)
-                    {
-                        cout << "  " << i;
-                    }
-                    cout << endl << endl;
-                }
+                board_display(ploca, napotezu);
 
 
                 if (napotezu % 2 != 0)
@@ -936,7 +949,7 @@ int main()
                         {
                             for (int i = unos_reda_pocetni - 1; i >= unos_reda_pomak; i--)
                             {
-                                if (ploca[i][unos_stupca_pocetni] != 13)//reerwerwere
+                                if (ploca[i][unos_stupca_pocetni] != 13)
                                 {
                                     reset = 1;
                                     break;
@@ -1026,50 +1039,47 @@ int main()
 
                     if (rosada_b1 == 2)
                     {
+                        tmp << "Ooo" << endl;
                         ploca[7][1] = 10;
                         ploca[7][2] = 2;
                         ploca[7][0] = 13;
                         ploca[7][4] = 13;
                         rosada_b1 = 0;
                         rosada_b2 = 0;
-                        rosada_c1 = 0;
-                        rosada_c2 = 0;
                     }
                     else if (rosada_b2 == 2)
                     {
+                        tmp << "Oo" << endl;
                         ploca[7][6] = 10;
                         ploca[7][5] = 2;
                         ploca[7][7] = 13;
                         ploca[7][4] = 13;
                         rosada_b1 = 0;
                         rosada_b2 = 0;
-                        rosada_c1 = 0;
-                        rosada_c2 = 0;
                     }
                     else if (rosada_c1 == 2)
                     {
+                        tmp << "ooo" << endl;
                         ploca[0][1] = 11;
                         ploca[0][2] = 3;
                         ploca[0][0] = 13;
                         ploca[0][4] = 13;
-                        rosada_b1 = 0;
-                        rosada_b2 = 0;
                         rosada_c1 = 0;
                         rosada_c2 = 0;
                     }
                     else if (rosada_c2 == 2)
                     {
+                        tmp << "oo" << endl;
                         ploca[7][6] = 10;
                         ploca[7][5] = 2;
                         ploca[7][7] = 13;
                         ploca[7][4] = 13;
-                        rosada_b1 = 0;
-                        rosada_b2 = 0;
                         rosada_c1 = 0;
                         rosada_c2 = 0;
                     }
                     else
                     {
+                        tmp<<unos_stupca_pocetni<<unos_reda_pocetni<<unos_stupca_pomak<<unos_reda_pomak<<endl;
                         ploca[unos_reda_pomak][unos_stupca_pomak] = ploca[unos_reda_pocetni][unos_stupca_pocetni];
                         ploca[unos_reda_pocetni][unos_stupca_pocetni] = 13;
                     }
@@ -1135,69 +1145,8 @@ int main()
                             break;
                     }
 
-                    if (napotezu % 2 != 0)
-                    {
-                        for (int t = 8, i = 0; i < 8; i++)
-                        {
-                            cout << "|";
-                            for (int j = 0; j < 8; j++)
-                            {
-                                int t = ploca[i][j];
-                                if (t % 2 == 0 && t != 13 && t != 14 && t != 15)
-                                {
-                                    cout << "B";
-                                    cout << figure[t] << "|";
-                                }
-                                if (t % 2 != 0 && t != 13 && t != 14 && t != 15)
-                                {
-                                    cout << "C";
-                                    cout << figure[t] << "|";
-                                }
-                                if (t == 13 || t == 14 || t == 15)
-                                    cout << "  |";
-                            }
-                            cout << " " << t << endl;
-                            t--;
-                        }
-                        for (char i = 'A'; i < 'I'; i++)
-                        {
-                            cout << "  " << i;
-                        }
-                        cout << endl << endl;
-                    }
-
-                    else
-                    {
-                        for (int t = 1, i = 7; i >= 0; i--)
-                        {
-                            cout << "|";
-                            for (int j = 7; j >= 0; j--)
-                            {
-                                int t = ploca[i][j];
-                                if (t % 2 == 0 && t != 13 && t != 14 && t != 15)
-                                {
-                                    cout << "B";
-                                    cout << figure[t] << "|";
-                                }
-                                if (t % 2 != 0 && t != 13 && t != 14 && t != 15)
-                                {
-                                    cout << "C";
-                                    cout << figure[t] << "|";
-                                }
-                                if (t == 13 || t == 14 || t == 15)
-                                    cout << "  |";
-                            }
-                            cout << " " << t << endl;
-                            t++;
-                        }
-                        for (char i = 'H'; i >= 'A'; i--)
-                        {
-                            cout << " " << i;
-                        }
-                        cout << endl << endl;
-                    }
-
-                    board_display(ploca);
+                    board_display(ploca, napotezu);
+                    
 
                     napotezu++;
                 }
@@ -1211,7 +1160,7 @@ int main()
                         cout << "Bijeli je pobjednik!!" << endl;
                     else
                         cout << "Crni je pobjednik!!" << endl;
-                    return 0;
+                    break;
                 }
                 //provjera saha za bijelog
 
@@ -1444,6 +1393,44 @@ int main()
                     cout << "\nSAH NA CRNOG!!!\n" << endl;
 
             }
+            pause();
+            system("cls");
+            cout << "\nSave [1]\nAnaliza [2]\nNastavak [3]" << endl;
+            cin >> izbor;
+            if (izbor == 1)
+            {
+                    cout << "Slot 1-5";
+                    cin >> izbor;
+                    if (izbor == 1)
+                        replay_open.open("data/replays/slot_1", ios::out);
+                    else if (izbor == 2)
+                        replay_open.open("data/replays/slot_2", ios::out);
+                    else if (izbor == 3)
+                        replay_open.open("data/replays/slot_3", ios::out);
+                    else if (izbor == 4)
+                        replay_open.open("data/replays/slot_4", ios::out);
+                    else if (izbor == 5)
+                        replay_open.open("data/replays/slot_5", ios::out);
+                    else
+                    {
+                        cout << "Krivi unos!" << endl;
+                        pause();
+                    }
+                    string str;
+                    while (getline(tmp, str)) 
+                        replay_open << str << endl;
+            }
+            else if (izbor == 2)
+            {
+                replay(tmp);
+            }
+            else
+            {
+                cout << "Krivi unos!" << endl;
+                pause();
+            }
+            
+            delete("temp.txt");
         }
 
         else if (izbor == 2)
@@ -1460,7 +1447,7 @@ int main()
                 cout << endl << "P2\t";
                 for (int i = 0; i < 5; i++)
                     cout << s[i].player1 << "\t";
-                cout << "Winner\t";
+                cout << endl << "Winner\t";
                 for (int i = 0; i < 5; i++)
                     cout << s[i].winner << "\t";
                 cout << "\n\nExit [0]" << endl;
@@ -1549,7 +1536,9 @@ int main()
                     }
                 }
                 else if (menager_izbor == 2)
+                {
                     new_user(a, br_user);
+                }
                 else if (menager_izbor == 3)
                 {
                     char brisati[51];
@@ -1636,13 +1625,18 @@ int main()
         else if (izbor == 5)
         {
             //pravila
-            SetConsoleOutputCP(65001);
+            /*SetConsoleOutputCP(65001);
             HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
             char q[] = "\xE2\x99\x94 ";
             SetConsoleTextAttribute(hConsole, 16);
             cout << q;
-            SetConsoleTextAttribute(hConsole, 15);
-            pause();
+            SetConsoleTextAttribute(hConsole, 15);*/
+
+            board_display(ploca, 1);
+            
+            board_display(ploca, 2);
+
+          
         }
 
         else if (izbor == 6)
@@ -1657,8 +1651,7 @@ int main()
             pause();
         }
     }
-
-    users.open("users.bin", ios::out | ios::binary);
+    users.open("data/users.bin", ios::out | ios::binary);
     users.write((char*)&br_user, sizeof(br_user));
     users.write((char*)&a, sizeof(user)* br_user);
     users.close();
