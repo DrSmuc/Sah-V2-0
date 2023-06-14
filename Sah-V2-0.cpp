@@ -7,6 +7,8 @@
 
 using namespace std;
 
+std::string::size_type sz = 0;
+
 void naslov()
 {
     cout << "      :::::           ########            |||             |||      " << endl;
@@ -33,9 +35,9 @@ struct user
 
 struct r_slot
 {
-    char *player1=new char[51];
-    char *player2=new char[51];
-    char *winner=new char[51];
+    char player1[51];
+    char player2[51];
+    char winner[51];
 };
 
 void pause() //hvala profesore :)
@@ -73,22 +75,13 @@ void board_display(int** ploca, int napotezu)
     figure[9] = 'Q';
     figure[10] = 'K';
     figure[11] = 'K';
-    int pb = 0;
-    for (int i = 0; i < 8; i++)
-        for (char j = 'A'; j < 'I'; j++)
-            stupac_pretvarac[i] = j;
-    for (int i = 'a'; i < 'i'; i++)
-    {
-        stupac_pretvarac[pb] = i;
-        pb++;
-    }
 
     system("cls");
 
     //ispis ploce
     if (napotezu % 2 != 0)
     {
-        for (int t = 8, i = 0; i < 8; i++)
+        for (int h = 8, i = 0; i < 8; i++)
         {
             cout << "|";
             for (int j = 0; j < 8; j++)
@@ -107,8 +100,8 @@ void board_display(int** ploca, int napotezu)
                 if (t == 13 || t == 14 || t == 15)
                     cout << "  |";
             }
-            cout << " " << t << endl;
-            t--;
+            cout << " " << h << endl;
+            h--;
         }
         cout << " ";
         for (char i = 'A'; i < 'I'; i++)
@@ -148,74 +141,77 @@ void board_display(int** ploca, int napotezu)
         }
         cout << endl << endl;
     }
-    pause();
 }
 
 void replay(fstream &file, string p1, string p2)
 {
-    string str;
-    string input;
+    int input;
     int active_potez = 0;
-    int end = 0;
-    while (getline(file, str))
+    int end = -1;
+    int x;
+    while (1)
+    {
+        file >> x;
+        if (x == -1)
+            break;
         end++;
+    }
+    end /= 64;
     file.seekg(0);
     int** ploca = new int* [8];
     for (int i = 0; i < 8; i++)
         ploca[i] = new int[8];
 
-    cout << "A - prethodni potez" << endl;
-    cout << "D - sljedeci potez" << endl;
-    cout << "w - pocetak" << endl;
-    cout << "S - kraj igre" << endl;
-    cout << "Broj - skok na taj potez" << endl;
-    cout << "-1 - izlaz" << endl;
-    cout << "Vas izbor: ";
+    system("cls");
+    cout << "8 - prethodni potez" << endl;
+    cout << "4 - sljedeci potez" << endl;
+    cout << "2 - pocetak" << endl;
+    cout << "6 - kraj igre" << endl;
+    cout << "0 - izlaz" << endl << endl << endl;
+
+    for (int i = 0; i < 8; i++)
+        for (int j = 0; j < 8; j++)
+            file >> ploca[i][j];
+    file.seekg(0);
+
+    board_display(ploca, 1);
 
 start:
+    cout << "\nVas izbor: " << endl;
     cin >> input;
 
-    if (input == "W")
+    if (input == 8)
         active_potez = 0;
-    else if (input == "A")
-        active_potez++;
-    else if (input == "S")
+    else if (input == 4)
+        active_potez--;
+    else if (input == 2)
         active_potez = end;
-    else if (input == "D")
+    else if (input == 6)
         active_potez++;
-    else if (input == "-1")
+    else if (input == 0)
     {
         cout << "Izlaz" << endl;
         pause();
         return;
     }
-    else if (stoi(input) > 0 && stoi(input) < end)
-        active_potez = stoi(input);
     else
     {
         cout << "Krivi unos!" << endl;
         pause();
         goto start;
     }
-    for (int br = 0; br < active_potez; br++)
+    if (active_potez < 0)
+        active_potez = 0;
+    if (active_potez > end)
+        active_potez = end;
+    file.seekg(0);
+    for (int br = 0; br <= active_potez; br++)
     {
-        if (br == active_potez)
-        {
             for (int i = 0; i < 8; i++)
-            {
                 for (int j = 0; j < 8; j++)
-                {
-                    if (i == 7 && j == 7)
-                        getline(file, str);
-                    else
-                        getline(file, str, ',');
-                    ploca[i][j] = stoi(str);
-                }
-            }
-        }
+                    file >> ploca[i][j];
     }
-    int napotezu = active_potez % 2;
-    board_display(ploca, napotezu);
+    board_display(ploca, 1);
     goto start;
 }
 
@@ -268,13 +264,6 @@ int main()
     user a[50];
     r_slot s[5];
 
-    for (int i = 0; i < 5; i++)
-    {
-        strcpy(s[i].player1, "Empty");
-        strcpy(s[i].player2, "Empty");
-        strcpy(s[i].winner, "Empty");
-    }
-
     fstream users;
     users.open("data/users.bin", ios::in | ios::binary);
     users.read((char*)&br_user, sizeof(br_user));
@@ -283,11 +272,13 @@ int main()
     sort(a, a + br_user, poIme);
 
     fstream replay_list;
-    replay_list.open("data/replays/list.txt", ios::in|ios::binary);
+    replay_list.open("data/replays/list.bin", ios::in | ios::binary);
     replay_list.read((char*)&s, sizeof(r_slot) * 5);
     replay_list.close();
 
     fstream replay_open;
+
+    fstream tmp;
 
     int** ploca = new int*[8];
     for (int i = 0; i < 8; i++)
@@ -439,12 +430,9 @@ int main()
 
             //stari kod
 
-            char  figure[13], stupac_pretvarac[8];
+            char stupac_pretvarac[8];
             int krajigre = 0, rosada_b1 = 1, rosada_b2 = 1, rosada_c1 = 1, rosada_c2 = 1, pozicija_ck_i = 0, pozicija_bk_i = 7, pozicija_bk_j = 4, pozicija_ck_j = 4;
-            
-            fstream tmp;
-            tmp.open("temp.cvs", ios::out|ios::in);
-            
+
             cout << "Upisite ime bijeli: \n" << endl;
 
             cout << "\n\nFigure: \n\nB - BIJELA FIGURA \nC - CRNA FIGURA \nP - PJESACI \nT - TOP \nS - SKAKAC \nL - LOVAC \nQ - KRALJICA \nK - KRALJ\n\n" << endl;
@@ -455,20 +443,6 @@ int main()
             for (int i = 0; i < 8; i++)
                 for (int j = 0; j < 8; j++)
                     ploca[i][j] = 13;
-
-            figure[0] = 'P';
-            figure[1] = 'P';
-            figure[2] = 'T';
-            figure[3] = 'T';
-            figure[4] = 'S';
-            figure[5] = 'S';
-            figure[6] = 'L';
-            figure[7] = 'L';
-            figure[8] = 'Q';
-            figure[9] = 'Q';
-            figure[10] = 'K';
-            figure[11] = 'K';
-
 
             ploca[0][0] = 3;
             ploca[0][1] = 5;
@@ -505,6 +479,12 @@ int main()
             }
 
             int napotezu = 1;
+
+            tmp.open("temp.txt", ios::out);
+            for (int i = 0; i < 8; i++)
+                for (char j = 0; j < 8; j++)
+                    tmp << ploca[i][j] << " ";
+            tmp << endl;
 
             while (1)
             {
@@ -544,6 +524,9 @@ start_game:
                             a[active_u2].los++;
                     }
                     cout << " je podjednik!" << endl;
+                    int jedan = -1;
+                    tmp << jedan;
+                    tmp.close();
                     goto after_game;
                 }
                 if (stupac_pocetni == 'd' && c_red_pocetni == 'r')
@@ -957,7 +940,7 @@ start_game:
                         {
                             for (int i = unos_reda_pocetni - 1; i >= unos_reda_pomak; i--)
                             {
-                                if (ploca[i][unos_stupca_pocetni] != 13)//gsgsgsdgsdg
+                                if (ploca[i][unos_stupca_pocetni] != 13)
                                 {
                                     reset = 1;
                                     break;
@@ -1285,18 +1268,23 @@ start_game:
                         {
                             tmp << ploca[i][j];
                             if (i != 7 || j != 7)
-                                tmp << ',';
+                                tmp << " ";
                         }
                     }
                     tmp << endl;
 
                     board_display(ploca, napotezu);
+                    pause();
 
                     napotezu++;
                     goto start_game;
                 }
                 else
+                {
                     cout << "Krivi unos\nPonovite unos.\n\n";
+                    pause();
+                    goto start_game;
+                }
 
 
                     if (krajigre == 1)
@@ -1311,6 +1299,11 @@ start_game:
                             cout << "Crni je pobjednik!!" << endl;
                             winner = player2;
                         }
+                        cout << " Remi!" << endl;
+                        int jedan = -1;
+                        tmp << jedan;
+                        tmp.close();
+                        goto after_game;
                         break;
                     }
                 //provjera saha za bijelog
@@ -1553,37 +1546,52 @@ after_game:
 
             if (izbor == 1)
             {
-                    cout << "Slot 1-5";
-                    cin >> izbor;
-                    if (izbor == 1)
-                        replay_open.open("data/replays/slot_1.cvs", ios::out);
-                    else if (izbor == 2)
-                        replay_open.open("data/replays/slot_2.cvs", ios::out);
-                    else if (izbor == 3)
-                        replay_open.open("data/replays/slot_3.cvs", ios::out);
-                    else if (izbor == 4)
-                        replay_open.open("data/replays/slot_4.cvs", ios::out);
-                    else if (izbor == 5)
-                        replay_open.open("data/replays/slot_5.cvs", ios::out);
-                    else
-                    {
-                        cout << "Krivi unos!" << endl;
-                        goto after_game;
-                    }
-                    string str;
-                    while (getline(tmp, str)) 
-                        replay_open << str << endl;
-                    strcpy(s[izbor].player1, player1.c_str());
-                    strcpy(s[izbor].player2, player2.c_str());
-                    strcpy(s[izbor].winner, winner.c_str());
-                    replay_list.open("data/replays/list.bin", ios::out | ios::app | ios::binary);
-                    replay_list.write((char*)s, sizeof(r_slot) * 5);
-                    cout << "Saved pod slot " << izbor << endl;
+                cout << "Slot 1-5" << endl;
+                cin >> izbor;
+                if (izbor == 1)
+                    replay_open.open("data/replays/slot_1.txt", ios::out);
+                else if (izbor == 2)
+                    replay_open.open("data/replays/slot_2.txt", ios::out);
+                else if (izbor == 3)
+                    replay_open.open("data/replays/slot_3.txt", ios::out);
+                else if (izbor == 4)
+                    replay_open.open("data/replays/slot_4.txt", ios::out);
+                else if (izbor == 5)
+                    replay_open.open("data/replays/slot_5.txt", ios::out);
+                else
+                {
+                    cout << "Krivi unos!" << endl;
                     goto after_game;
+                }
+                izbor--;
+                int x;
+                tmp.open("temp.txt", ios::in);
+                for (int i = 1;; i++)
+                {
+                    tmp >> x;
+                    replay_open << x << " ";
+                    if (i % 64 == 0)
+                        replay_open << endl;
+                    if (x == -1)
+                        break;
+                }
+                tmp.close();
+                replay_open.close();
+                strcpy(s[izbor].player1, player1.c_str());
+                strcpy(s[izbor].player2, player2.c_str());
+                strcpy(s[izbor].winner, winner.c_str());
+                replay_list.open("data/replays/list.bin", ios::out | ios::binary);
+                replay_list.write((char*)&s, sizeof(r_slot) * 5);
+                replay_list.close();
+                izbor++;
+                cout << "Saved pod slot " << izbor << endl;
+                goto after_game;
             }
             else if (izbor == 2)
             {
+                tmp.open("temp.txt", ios::in);
                 replay(tmp, player1, player2);
+                tmp.close();
                 goto after_game;
             }
             else if (izbor == 3)
@@ -1595,8 +1603,6 @@ after_game:
                 cout << "Krivi unos!" << endl;
                 goto after_game;
             }
-            
-            remove("temp.cvs");
         }
 
         else if (izbor == 2)
@@ -1612,7 +1618,7 @@ after_game:
                     cout << s[i].player1 << "\t";
                 cout << endl << "P2\t";
                 for (int i = 0; i < 5; i++)
-                    cout << s[i].player1 << "\t";
+                    cout << s[i].player2 << "\t";
                 cout << endl << "Winner\t";
                 for (int i = 0; i < 5; i++)
                     cout << s[i].winner << "\t";
@@ -1631,27 +1637,31 @@ after_game:
                     replay_open.open("data/replays/slot_1.txt", ios::in);
                     replay(replay_open, s[0].player1, s[0].player2);
                 }
-                else if (r_izbor == 1)
+                else if (r_izbor == 2)
                 {
                     replay_open.open("data/replays/slot_2.txt", ios::in);
                     replay(replay_open, s[1].player1, s[1].player2);
                 }
-                else if (r_izbor == 1)
+                else if (r_izbor == 3)
                 {
                     replay_open.open("data/replays/slot_3.txt", ios::in);
                     replay(replay_open, s[2].player1, s[2].player2);
                 }
-                else if (r_izbor == 1)
+                else if (r_izbor == 4)
                 {
                     replay_open.open("data/replays/slot_4.txt", ios::in);
                     replay(replay_open, s[3].player1, s[3].player2);
                 }
-                else if (r_izbor == 1)
+                else if (r_izbor == 5)
                 {
                     replay_open.open("data/replays/slot_5.txt", ios::in);
                     replay(replay_open, s[4].player1, s[4].player2);
                 }
-
+                else
+                {
+                    cout << "Krivi unos!" << endl;
+                    pause();
+                }
             }
         }
 
