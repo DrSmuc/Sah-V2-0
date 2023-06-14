@@ -44,11 +44,22 @@ void pause() //hvala profesore :)
     string dummy;
     cin.ignore();
     getline(cin, dummy);
+    cout << endl;
+}
+
+int find_user(user *a, int br, char *str)
+{
+    for (int i = 0; i < br; i++)
+    {
+        if (strcmp(a[i].ime, str) == 0)
+            return i;
+    }
+    return -1;
 }
 
 void board_display(int** ploca, int napotezu)
 {
-    char  figure[13], stupac_pretvarac[8];
+    char  figure[13]{}, stupac_pretvarac[8]{};
 
     figure[0] = 'P';
     figure[1] = 'P';
@@ -109,7 +120,7 @@ void board_display(int** ploca, int napotezu)
 
     else
     {
-        for (int t = 1, i = 7; i >= 0; i--)
+        for (int h = 1, i = 7; i >= 0; i--)
         {
             cout << "|";
             for (int j = 7; j >= 0; j--)
@@ -128,8 +139,8 @@ void board_display(int** ploca, int napotezu)
                 if (t == 13 || t == 14 || t == 15)
                     cout << "  |";
             }
-            cout << " " << t << endl;
-            t++;
+            cout << " " << h << endl;
+            h++;
         }
         for (char i = 'H'; i >= 'A'; i--)
         {
@@ -153,7 +164,6 @@ void replay(fstream &file, string p1, string p2)
     for (int i = 0; i < 8; i++)
         ploca[i] = new int[8];
 
-start:
     cout << "A - prethodni potez" << endl;
     cout << "D - sljedeci potez" << endl;
     cout << "w - pocetak" << endl;
@@ -161,6 +171,8 @@ start:
     cout << "Broj - skok na taj potez" << endl;
     cout << "-1 - izlaz" << endl;
     cout << "Vas izbor: ";
+
+start:
     cin >> input;
 
     if (input == "W")
@@ -325,6 +337,7 @@ int main()
         if (izbor == 1)
         {
             string player1, player2, winner;
+            int active_u1 = -1, active_u2 = -1;
 
             while (1)
             {
@@ -344,6 +357,9 @@ int main()
                         new_user(a, br_user);
                         player1 = a[br_user - 1].ime;
                         sort(a, a + br_user, poIme);
+                        char c[51];
+                        strcpy(c, player1.c_str());
+                        active_u1 = find_user(a, br_user, c);
                         break;
                     }
                     else if (izbor_user1 == i - 2)
@@ -356,6 +372,7 @@ int main()
                     else
                     {
                         player1 = a[izbor_user1].ime;
+                        active_u1 = izbor_user1;
                         break;
                     }
                     pause();
@@ -388,6 +405,9 @@ int main()
                         new_user(a, br_user);
                         player2 = a[br_user - 1].ime;
                         sort(a, a + br_user, poIme);
+                        char c[51];
+                        strcpy(c, player2.c_str());
+                        active_u2 = find_user(a, br_user, c);
                         break;
                     }
                     else if (izbor_user2 == i - 2) {
@@ -403,6 +423,7 @@ int main()
                     else
                     {
                         player2 = a[izbor_user2].ime;
+                        active_u2 = izbor_user2;
                         break;
                     }
                 }
@@ -487,9 +508,9 @@ int main()
 
             while (1)
             {
+start_game:
                 int unos_reda_pomak, unos_stupca_pocetni, reset = 1, unos_stupca_pomak, unos_reda_pocetni, red_pocetni, red_pomak, bsah_dd = 0, bsah_dl = 0, bsah_gl = 0, bsah_gd = 0, bsah_g = 0, bsah_desno = 0, bsah_d = 0, bsah_l = 0, bsah_pijun = 0, bsah_konj = 0, csah_dd = 0, csah_dl = 0, csah_gl = 0, csah_gd = 0, csah_g = 0, csah_desno = 0, csah_d = 0, csah_l = 0, csah_pijun = 0, csah_konj = 0;
-                char stupac_pocetni, stupac_pomak, zamjena_figure;
-
+                char stupac_pocetni, stupac_pomak, zamjena_figure, c_red_pocetni;
 
                 board_display(ploca, napotezu);
 
@@ -498,11 +519,55 @@ int main()
                     cout << player1 << endl;
                 else
                     cout << player2 << endl;
-                cout << "Upisite polje figure koju zelite pomaknuti:\n" << endl;
-                cin >> stupac_pocetni >> red_pocetni;
-                cout << "Upisite polje gdje zelite pomaknuti figuru:\n" << endl;
+                char *input=new char[5];
+                cout << "Upisite polje figure koju zelite pomaknuti:" << endl;
+                cin >> stupac_pocetni >> c_red_pocetni;
+                if (stupac_pocetni == 'f' && c_red_pocetni == 'f')
+                {
+                    cout << "Predaja!" << endl;
+                    if (napotezu % 2 != 0)
+                    {
+                        cout << player2;
+                        winner = player2;
+                        if (active_u1 >= 0)
+                            a[active_u1].los++;
+                        if (active_u2 >= 0)
+                            a[active_u2].win++;
+                    }
+                    else
+                    {
+                        cout << player1;
+                        winner = player1;
+                        if (active_u1 >= 0)
+                            a[active_u1].win++;
+                        if (active_u2 >= 0)
+                            a[active_u2].los++;
+                    }
+                    cout << " je podjednik!" << endl;
+                    goto after_game;
+                }
+                if (stupac_pocetni == 'd' && c_red_pocetni == 'r')
+                {
+                    cout << "Prihvacate remi?\n[1] Da\n[2] Ne" << endl;
+                    int izbor_ff;
+                    cin >> izbor_ff;
+                    if (izbor_ff == 1)
+                    {
+                        winner = "Draw";
+                        if (active_u1 >= 0)
+                            a[active_u1].drw++;
+                        if (active_u2 >= 0)
+                            a[active_u2].drw++;
+                        goto after_game;
+                    }
+                    else
+                        goto start_game;
+                }
+
+                cout << "Upisite polje gdje zelite pomaknuti figuru:" << endl;
                 cin >> stupac_pomak >> red_pomak;
 
+                red_pocetni = int(c_red_pocetni - '0');
                 unos_reda_pocetni = 8 - red_pocetni;
 
                 for (int i = 0; i < 8; i++)
@@ -1228,9 +1293,10 @@ int main()
                     board_display(ploca, napotezu);
 
                     napotezu++;
+                    goto start_game;
                 }
                 else
-                    cout << "Krivi unos\nPonovite unos.\n\n" << endl;
+                    cout << "Krivi unos\nPonovite unos.\n\n";
 
 
                     if (krajigre == 1)
@@ -1247,8 +1313,6 @@ int main()
                         }
                         break;
                     }
-                    else if (krajigre == 2)
-                        winner = "Draw";
                 //provjera saha za bijelog
 
                 for (int i = pozicija_bk_i + 1, j = pozicija_bk_j + 1; i < 8 && j < 8; i++, j++)
@@ -1532,7 +1596,7 @@ after_game:
                 goto after_game;
             }
             
-            delete("temp.cvs");
+            remove("temp.cvs");
         }
 
         else if (izbor == 2)
