@@ -178,6 +178,7 @@ void replay(fstream &file, string p1, string p2)
     file.seekg(0);
 
     board_display(ploca, 1);
+    pause();
 
 start:
     cout << "\nVas izbor: " << endl;
@@ -544,6 +545,9 @@ start_game:
                             a[active_u1].drw++;
                         if (active_u2 >= 0)
                             a[active_u2].drw++;
+                        int jedan = -1;
+                        tmp << jedan;
+                        tmp.close();
                         goto after_game;
                     }
                     else
