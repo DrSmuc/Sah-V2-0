@@ -4,6 +4,7 @@
 #include<string>
 #include<algorithm>
 #include<string.h>
+#include<Windows.h>
 
 using namespace std;
 
@@ -61,20 +62,22 @@ int find_user(user *a, int br, char *str)
 
 void board_display(int** ploca, int napotezu)
 {
-    char  figure[13]{}, stupac_pretvarac[8]{};
+    char  figure[12][10]{}, stupac_pretvarac[8]{};
+    SetConsoleOutputCP(65001);
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
-    figure[0] = 'P';
-    figure[1] = 'P';
-    figure[2] = 'T';
-    figure[3] = 'T';
-    figure[4] = 'S';
-    figure[5] = 'S';
-    figure[6] = 'L';
-    figure[7] = 'L';
-    figure[8] = 'Q';
-    figure[9] = 'Q';
-    figure[10] = 'K';
-    figure[11] = 'K';
+    strcpy(figure[0], "\xE2\x99\x99 ");
+    strcpy(figure[1], "\xE2\x99\x99 ");
+    strcpy(figure[2], "\xE2\x99\x96 ");
+    strcpy(figure[3], "\xE2\x99\x96 ");
+    strcpy(figure[4], "\xE2\x99\x98 ");
+    strcpy(figure[5], "\xE2\x99\x98 ");
+    strcpy(figure[6], "\xE2\x99\x97 ");
+    strcpy(figure[7], "\xE2\x99\x97 ");
+    strcpy(figure[8], "\xE2\x99\x95 ");
+    strcpy(figure[9], "\xE2\x99\x95 ");
+    strcpy(figure[10], "\xE2\x99\x94 ");
+    strcpy(figure[11], "\xE2\x99\x94 ");
 
     system("cls");
 
@@ -89,13 +92,13 @@ void board_display(int** ploca, int napotezu)
                 int t = ploca[i][j];
                 if (t % 2 == 0 && t != 13 && t != 14 && t != 15)
                 {
-                    cout << "B";
-                    cout << figure[t] << "|";
+                    cout << "\033[37m";
+                    cout << figure[t] << "\033[37m" << "|";
                 }
                 if (t % 2 != 0 && t != 13 && t != 14 && t != 15)
                 {
-                    cout << "C";
-                    cout << figure[t] << "|";
+                    cout << "\033[36m";
+                    cout << figure[t] << "\033[37m" << "|";
                 }
                 if (t == 13 || t == 14 || t == 15)
                     cout << "  |";
@@ -121,13 +124,13 @@ void board_display(int** ploca, int napotezu)
                 int t = ploca[i][j];
                 if (t % 2 == 0 && t != 13 && t != 14 && t != 15)
                 {
-                    cout << "B";
-                    cout << figure[t] << "|";
+                    cout << "\033[37m";
+                    cout << figure[t] << "\033[37m" << "|";
                 }
                 if (t % 2 != 0 && t != 13 && t != 14 && t != 15)
                 {
-                    cout << "C";
-                    cout << figure[t] << "|";
+                    cout << "\033[36m";
+                    cout << figure[t] << "\033[37m" << "|";
                 }
                 if (t == 13 || t == 14 || t == 15)
                     cout << "  |";
@@ -1839,15 +1842,6 @@ after_game:
                 cout << "Za pomicanje figura upisite koordinate polja figure koju zelite pomaknuti potom mjesto polja gdje ju zelite pomaknuti." << endl;
                 cout << "Prvo upisite stupac a potom redak." << endl;
                 pause();
-
-            /*SetConsoleOutputCP(65001);
-            HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-            char q[] = "\xE2\x99\x94 ";
-            SetConsoleTextAttribute(hConsole, 16);
-            cout << q;
-            SetConsoleTextAttribute(hConsole, 15);*/
-
-          
         }
 
         else if (izbor == 6)
